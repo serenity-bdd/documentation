@@ -1,0 +1,29 @@
+{
+  "unversionedId": "tutorials/tutorials_screenplay",
+  "id": "tutorials/tutorials_screenplay",
+  "isDocsHomePage": false,
+  "title": "Your First Serenity Screenplay Test",
+  "description": "Welcome to the Serenity BDD Tutorials library!",
+  "source": "@site/docs/tutorials/intro.md",
+  "sourceDirName": "tutorials",
+  "slug": "/tutorials/tutorials_screenplay",
+  "permalink": "/docs/tutorials/tutorials_screenplay",
+  "editUrl": "https://github.com/serenity-core/serenity-docs/docs/tutorials/intro.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "id": "tutorials_screenplay",
+    "title": "Your First Serenity Screenplay Test",
+    "sidebar_position": 1
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Your First Serenity BDD Test",
+    "permalink": "/docs/intro"
+  },
+  "next": {
+    "title": "Creating A New Project",
+    "permalink": "/docs/guide/user_guide_intro"
+  }
+}

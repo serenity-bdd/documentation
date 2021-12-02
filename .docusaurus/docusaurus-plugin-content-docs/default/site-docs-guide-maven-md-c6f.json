@@ -1,0 +1,25 @@
+{
+  "unversionedId": "guide/maven",
+  "id": "guide/maven",
+  "isDocsHomePage": false,
+  "title": "Using Maven with Serenity",
+  "description": "Maven is the recommended build tool for Serenity BDD.",
+  "source": "@site/docs/guide/maven.md",
+  "sourceDirName": "guide",
+  "slug": "/guide/maven",
+  "permalink": "/docs/guide/maven",
+  "editUrl": "https://github.com/serenity-core/serenity-docs/docs/guide/maven.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 2,
+  "frontMatter": {
+    "id": "maven",
+    "title": "Using Maven with Serenity",
+    "sidebar_position": 2
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Creating A New Project",
+    "permalink": "/docs/guide/user_guide_intro"
+  }
+}

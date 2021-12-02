@@ -1,0 +1,27 @@
+{
+  "unversionedId": "serenity-bdd-quickstart/index",
+  "id": "serenity-bdd-quickstart/index",
+  "isDocsHomePage": false,
+  "title": "Introduction",
+  "description": "Add Markdown or React files to src/pages to create a standalone page:",
+  "source": "@site/docs/serenity-bdd-quickstart/index.md",
+  "sourceDirName": "serenity-bdd-quickstart",
+  "slug": "/serenity-bdd-quickstart/index",
+  "permalink": "/docs/serenity-bdd-quickstart/index",
+  "editUrl": "https://github.com/serenity-core/serenity-docs/docs/serenity-bdd-quickstart/index.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 1,
+  "frontMatter": {
+    "sidebar_position": 1
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Serenity BDD Documentation",
+    "permalink": "/docs/intro"
+  },
+  "next": {
+    "title": "Serenity BDD Tutorials",
+    "permalink": "/docs/tutorials/intro"
+  }
+}

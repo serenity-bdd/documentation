@@ -1,0 +1,28 @@
+{
+  "unversionedId": "tutorials/cucumber",
+  "id": "tutorials/cucumber",
+  "isDocsHomePage": false,
+  "title": "Your First Test With Serenity BDD And Cucumber",
+  "description": "",
+  "source": "@site/docs/tutorials/screenplay0.md",
+  "sourceDirName": "tutorials",
+  "slug": "/tutorials/cucumber",
+  "permalink": "/docs/tutorials/cucumber",
+  "editUrl": "https://github.com/serenity-core/serenity-docs/docs/tutorials/screenplay0.md",
+  "tags": [],
+  "version": "current",
+  "sidebarPosition": 3,
+  "frontMatter": {
+    "id": "cucumber",
+    "sidebar_position": 3
+  },
+  "sidebar": "tutorialSidebar",
+  "previous": {
+    "title": "Your First Serenity Screenplay Test",
+    "permalink": "/docs/tutorials/screenplay"
+  },
+  "next": {
+    "title": "Creating A New Project",
+    "permalink": "/docs/guide/user_guide_intro"
+  }
+}

@@ -21,16 +21,16 @@ We'll be using a fairly conventional test automation style in this tutorial, usi
 
 Go to the [project template page on Githuib](https://github.com/serenity-bdd/serenity-junit-starter) and click on [Use This Template](https://github.com/serenity-bdd/serenity-junit-starter/generate).
 
-![](tutorials/img/junit-template.png)
+![](img/junit-template.png)
 
 ## Writing a simple test
 
 Let's start with a simple test. We will run a simple search for the keyword "Cucumber" on the DuckDuckGo search engine:
-![](tutorials/img/duckduckgo.png)
+![](img/duckduckgo.png)
 
 First of all, we create a new package for our DuckDuckGo tests. The Serenity test reports mirror the directory structure we use to organise our tests, so it helps to make the structure and the package name meaningful.
 
-![](tutorials/img/initial-directory-structure.png)
+![](img/initial-directory-structure.png)
 
 ### Basic test structure
 
@@ -131,7 +131,7 @@ public class SearchActions extends UIInteractions {
 
 The third step of our test is to read the title of the search results sidebar and check that it is the value we expect.
 
-![](tutorials/img/result-module-title.png)
+![](img/result-module-title.png)
 
 We can do this with a Page Component object. Page Components (which extend the `PageComponent` class) are similar to action classes, but focus on reading information from a particular part of a web page, rather than modelling user interactions.
 
@@ -268,11 +268,11 @@ $ mvn verify
 
 Now open the `index.html` file in the `target/site/serenity` directory. You should see something like this:
 
-![](tutorials/img/report-home.png)
+![](img/report-home.png)
 
 Click on the "Test Results" tab and open the "When Searching By Keyword" scenario. This should show you the step-by-step details of your test:
 
-![](tutorials/img/report-keyword-search.png)
+![](img/report-keyword-search.png)
 
 ## Conclusion
 

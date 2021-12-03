@@ -14,8 +14,8 @@ function HomepageHeader() {
         <h1 className="hero__title">{siteConfig.title}</h1>
         <p className="hero__subtitle">{siteConfig.tagline}</p>
         <div className={styles.buttons}>
-          <Link className="button button--secondary button--lg" to="/docs/intro">
-            Write Your First Serenity BDD Test - 5min ⏱️
+          <Link className="button button--secondary button--lg" to="/docs/tutorials/first_test">
+            Write Your First Serenity BDD Test in less than 10min ⏱️
           </Link>
         </div>
       </div>

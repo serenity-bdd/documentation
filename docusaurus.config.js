@@ -51,7 +51,7 @@ const config = {
         items: [
           {
             type: 'doc',
-            docId: 'first_test',
+            docId: "tutorials/first_test",
             position: 'left',
             label: 'Tutorials',
           },
@@ -63,7 +63,7 @@ const config = {
           },
           {to: 'blog', label: 'Blog', position: 'left'},
           {
-            href: 'http://www.johnfergusonsmart.com/support',
+            href: 'http://www.johnfergusonsmart.com/serenity-bdd-mentoring/',
             label: 'Get Support',
             position: 'right',
           },
@@ -82,15 +82,15 @@ const config = {
       footer: {
         style: 'dark',
         links: [
-          {
-            title: 'Docs',
-            items: [
-              {
-                label: 'Tutorial',
-                to: '/docs/first_test',
-              },
-            ],
-          },
+          // {
+          //   title: 'Docs',
+          //   items: [
+          //     {
+          //       label: 'Tutorial',
+          //       to: "/docs/tutorials/first_test",
+          //     },
+          //   ],
+          // },
           {
             title: 'Community',
             items: [

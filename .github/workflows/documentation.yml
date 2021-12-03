@@ -39,7 +39,7 @@ jobs:
       - name: Release to GitHub Pages
         env:
           USE_SSH: true
-          GIT_USER: git
+          GIT_USER: wakaleo
         run: |
           git config --global user.email "john.smart@wakaleo.com"
           git config --global user.name "wakaleo"

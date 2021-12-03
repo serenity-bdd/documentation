@@ -14,7 +14,7 @@ const config = {
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
   organizationName: 'serenity-bdd', // Usually your GitHub org/user name.
-  projectName: 'serenity-core', // Usually your repo name.
+  projectName: 'documentation', // Usually your repo name.
 
   presets: [
     [
@@ -24,7 +24,7 @@ const config = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
-          editUrl: 'https://github.com/serenity-core/serenity-docs/',
+          editUrl: 'https://github.com/serenity-bdd/documentation/',
         },
         blog: {
           showReadingTime: true,

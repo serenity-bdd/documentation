@@ -1,6 +1,6 @@
 ---
 id: cucumber
-sidebar_position: 3
+sidebar_position: 2
 ---
 
-# Serenity BDD With Cucumber
+# Your First Test With Serenity BDD And Cucumber

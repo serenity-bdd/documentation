@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkserenity_users_guide=self.webpackChunkserenity_users_guide||[]).push([[576],{9040:function(e){e.exports=JSON.parse('{"allTagsPath":"/blog/tags","slug":"/blog/tags/reporting","name":"reporting","count":1,"permalink":"/blog/tags/reporting"}')}}]);

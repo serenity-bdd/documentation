@@ -1,5 +1,5 @@
 ---
-id: user_guide_intro
+id: getting_started
 title: Creating A New Project
 sidebar_position: 2
 ---

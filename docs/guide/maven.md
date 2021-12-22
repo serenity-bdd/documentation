@@ -1,7 +1,7 @@
 ---
 id: maven
 title: Using Maven with Serenity
-sidebar_position: 2
+sidebar_position: 3
 ---
 # Integrating Serenity BDD into a Maven project
 

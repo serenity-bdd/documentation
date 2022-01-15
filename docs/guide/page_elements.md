@@ -34,7 +34,7 @@ import net.serenitybdd.screenplay.ui.Button;
 .
 .
 .
-$(Button.called("Login").click();
+$(Button.called("Login")).click();
 ```
 
 Or for a Screenplay test, you could do the following:

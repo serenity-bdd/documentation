@@ -38,9 +38,8 @@ import flyer.steps.TravellerEarningStatusPoints;
 import static flyer.Status.Bronze;
 import static flyer.Status.Silver;
 
-/// [classbody]
 @ExtendWith(SerenityJUnit5Extension.class)
-public class WhenEarningFrequentFlyerStatus {
+public class WhenEarningFrequentFlyerPoints {
 
     @Steps
     TravellerEarningStatusPoints tracy;
@@ -70,222 +69,158 @@ public class WhenEarningFrequentFlyerStatus {
 
 Notice how the second test reuses step methods used in the first to perform a slightly different test. This is a typical example of the way we reuse steps in similar tests, in order to avoid duplicated code and make the code easier to maintain.
 
-## Implementing Step Libraries
-The `TravellerEarningStatusPoints` class is what we call a step library. We use the `@Steps` class as shown above to indicate a step library in our test code: this annotation tells Serenity to instantiate and instrument this field, so that methods you call in this library also appear in the test reports, just like in the one you can see here:
+## Implementing Simple Step Libraries
+The `TravellerEarningStatusPoints` class is what we call a step library. We use the `@Steps` class as shown above to indicate a step library in our test code: this annotation tells Serenity to instantiate and instrument this field, so that methods you call in this library also appear in the test reports.
 
-earn silver after 10000 km
 Step libraries contain the business tasks or actions that a user performs during a test. There are many ways to organise your step libraries, but a convenient way is to group methods in slices of business behaviour for a given type of user. In this case a traveller who is earning status points.
 
-Notice that it was not necessary to explicitly instantiate the Steps class TravellerEarningStatusPoints. When you annotated a member variable of this class with the @Steps annotation, Serenity BDD will automatically instantiate it for you.
+Notice that it was not necessary to explicitly instantiate the Steps class `TravellerEarningStatusPoints`. When you annotated a member variable of this class with the `@Steps` annotation, Serenity BDD will automatically instantiate it for you.
 
-You should never create instances of step libraries using the new keyword, as Serenity will not be able to instrument the step library correctly, and the methods called will not appear in the reports.
+You should never create instances of step libraries using the `new` keyword, as Serenity will not be able to instrument the step library correctly, and the methods called will not appear in the reports.
 
-Step methods are annotated with the @Step annotation:
+For example, suppose we want to test a simple calculator UI. In this class, we use the `CalculatorSteps` step library, which we annotate with the `@Steps` annotation:
 
-<!-- TravellerEarningStatusPoints.java
-package flyer.steps;
-
-import flyer.FrequentFlyer;
-import flyer.Status;
-import net.thucydides.core.annotations.Step;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-/// [classbody]
-/// [preamble]
-public class TravellerEarningStatusPoints {
-
-    private String actor;
-
-    private FrequentFlyer frequentFlyer;
-
-    /// [preamble]
-    /// [joins]
-    @Step("#actor joins the frequent flyer program")   
-    public void joins_the_frequent_flyer_program() {
-        frequentFlyer = FrequentFlyer.withInitialBalanceOf(0);
-    }
-    /// [joins]
-
-    @Step("#actor flies {0} km")
-    public void flies(int distance) {
-        frequentFlyer.recordFlightDistanceInKilometers(distance);
-    }
-
-    @Step("#actor should have a status of {0}")
-    public void should_have_a_status_of(Status expectedStatus) {
-        assertThat(frequentFlyer.getStatus()).isEqualTo(expectedStatus);
-    }
-
-    @Step("#actor transfers {0} points to {1}")
-    public void transfers_points(int points, TravellerEarningStatusPoints otherFrequentFlier) {
-        // Left as an exercise
-    }
-
-    @Override
-    public String toString() {
-        return actor;
-    }
-
-    @Step("#actor should have {0} points")
-    public void should_have_points(int expectedPoints) {
-        // Left as an exercise
-    }
-}
-/// [classbody]
-Steps classes can extend any class, or none
-If you include an actor field in your step library, Serenity will inject the name of the step.
-The @Step annotation denotes a Serenity step method
-The @Step can take a String value to override the default step name
-{0} indicates the first parameter of the step method. #name indicates the name field of the step library.
-One of the keys to writing good tests is getting the layers right. Test suites are more maintainable when they are organised in clear, well defined layers. This helps our brain concentrate on one thing at a time.
-
-Step libraries and personas
-Step libraries are often used to represent actors or persona who interact with the application. For example, the TravellerEarningStatusPoints step library we saw earlier represents how a Frequent Flyer member earns status points.
-
-Methods that represent a business task or action (joins_the_frequent_flyer_program()), and that will appear in the reports as a separate step, are annotated with the @Step annotation.
-
-TravellerEarningStatusPoints.java
-package flyer.steps;
-
-import flyer.FrequentFlyer;
-import flyer.Status;
-import net.thucydides.core.annotations.Step;
-
-import static org.assertj.core.api.Assertions.assertThat;
-
-/// [classbody]
-/// [preamble]
-public class TravellerEarningStatusPoints {
-
-    private String actor;
-
-    private FrequentFlyer frequentFlyer;
-
-    /// [preamble]
-    /// [joins]
-    @Step("#actor joins the frequent flyer program")   
-    public void joins_the_frequent_flyer_program() {
-        frequentFlyer = FrequentFlyer.withInitialBalanceOf(0);
-    }
-    /// [joins]
-
-    @Step("#actor flies {0} km")
-    public void flies(int distance) {
-        frequentFlyer.recordFlightDistanceInKilometers(distance);
-    }
-
-    @Step("#actor should have a status of {0}")
-    public void should_have_a_status_of(Status expectedStatus) {
-        assertThat(frequentFlyer.getStatus()).isEqualTo(expectedStatus);
-    }
-
-    @Step("#actor transfers {0} points to {1}")
-    public void transfers_points(int points, TravellerEarningStatusPoints otherFrequentFlier) {
-        // Left as an exercise
-    }
-
-    @Override
-    public String toString() {
-        return actor;
-    }
-
-    @Step("#actor should have {0} points")
-    public void should_have_points(int expectedPoints) {
-        // Left as an exercise
-    }
-}
-/// [classbody]
-Notice how the @Step attribute has a string value. This tells Serenity what to write in the reports when this step is executed. You don’t need a value (if you don’t have one, the name of the method will be used instead). But you can use this value to make your step names more meaningful.
-
-If you add an actor field to your step library, Serenity will inject the name of the @Steps variable into this field. You can then refer to it in the @Step annotation using the # notation that we saw earlier:
-
-@Step("#actor joins the frequent flyer program")
-Suppose we declare a step library like this:
-
-@Steps
-TravellerEarningStatusPoints tracy;
-In this case, the name "Tracy" would be injected into the actor field, and the step description would become "Tracy joins the frequent flyer program"
-
-You can also provide a more detailed name in the @Steps annotation:
-
-@Steps("Tracy Jones")
-TravellerEarningStatusPoints tracy;
-@Step methods can also take parameters, as we saw for the flies() and should_have_a_status_of() methods. You can refer to these in your step description using an indexed notation starting at zero: {0} for the first parameter, {1} for the second, and so on.
-
-@Step("#actor flies {0} km")
-public void flies(int distance) {...}
-This step would appear in the Serenity reports as "Tracy flies 10000 km".
-
-Using several step libraries to represent different actors
-Sometimes we can use several step libraries of the same type to make our tests more readable. For example, the following test shows how point transfers between different travellers works.
-
-TravellerEarningStatusPoints.java
-package flyer;
-
-import flyer.steps.TravellerEarningStatusPoints;
-import net.serenitybdd.junit.runners.SerenityRunner;
-import net.thucydides.core.annotations.Steps;
-import org.junit.Test;
-import org.junit.runner.RunWith;
-
-import static flyer.Status.Bronze;
-import static flyer.Status.Silver;
-
-/// [classbody]
-@RunWith(SerenityRunner.class)
-public class WhenTransferringFrequentFlyerPoints {
+```java
+@ExtendWith(SerenityJUnit5Extension.class)
+class WhenDoingSums {
 
     @Steps
-    TravellerEarningStatusPoints tracy;
+    CalculatorSteps calulate;
 
-    @Steps
-    TravellerEarningStatusPoints troy;
+    @Nested
+    class ABasicCalculator {
 
-    @Test
-    public void memberCanTransferPointsToAnotherMemberWithoutLosingStatus() {
-        // GIVEN
-        tracy.joins_the_frequent_flyer_program();
-        troy.joins_the_frequent_flyer_program();
+        @BeforeEach
+        void openTheCalculator() {
+            calulate.openTheCalculatorApp();
+        }
 
-        // AND
-        tracy.flies(20000);
+        @Test
+        void shouldCalculateAdditions() {
+            int result = calulate.theAnswerTo("1","+","2");
+            assertThat(result).isEqualTo(3);
+        }
 
-        // WHEN
-        tracy.transfers_points(15000, troy);
+        @Test
+        void shouldCalculateSubtractions() {
+            int result = calulate.theAnswerTo("7","-","3");
+            assertThat(result).isEqualTo(4);
+        }
 
-        // THEN
-        troy.should_have_points(15000);
+        @Test
+        void shouldCalculateMultiplications() {
+            int result = calulate.theAnswerTo("3","*","2");
+            assertThat(result).isEqualTo(6);
+        }
 
-        // AND
-        tracy.should_have_a_status_of(Silver);
+        @Test
+        void shouldCalculateDivisions() {
+            int result = calulate.theAnswerTo("10","/","2");
+            assertThat(result).isEqualTo(5);
+        }
     }
 }
-/// [classbody]
-...
-package flyer.steps;
+```
 
-import flyer.FrequentFlyer;
-import flyer.Status;
-import net.thucydides.core.annotations.Step;
+The `CalculatorSteps` class defines the steps a user needs to perform - in this case, perform a calculation on the calculator app:
 
-import static org.assertj.core.api.Assertions.assertThat;
+```java
+public class CalculatorSteps {
 
-/// [classbody]
-/// [preamble]
+    @Step("Calculate the answer to {0} {1} {2}")
+    public int theAnswerTo(String a, String operator, String b) {
+        // Interact with the the calculator to perform the calculation
+    }
+}
+```
+
+Step methods are annotated with the `@Step` annotation, which tells Serenity to include this method in the Serenity test reports. The value we include in the `@Step` annotation is the text that will appear in the Serenity reports when this step is executed. The numbers in curly brackets (`{0}`,`{1}` and `{2}`) represent placeholders the method parameters, if we want them to appear in the reports.
+
+When we run this test case, Serenity will document the steps that get executed during each test, producing a living documentation of the test execution:
+
+![](img/calculator-steps.png)
+
+### UI Interaction Classes
+
+Suppose our calculator test needs to interact with a web UI, such as the one on https://juliemr.github.io/protractor-demo/ shown here:
+
+![](img/calculator-app.png)
+
+We can access the powerful Serenity BDD Selenium integration in our step libraries by extending the `net.serenitybdd.core.steps.UIInteractions` class. A very simple implementation might look like this:
+
+```java
+public class CalculatorSteps extends UIInteractions {
+
+     @Step
+    public void openTheCalculatorApp() {
+        openUrl("https://juliemr.github.io/protractor-demo/");
+    }
+
+   @Step("Calculate the answer to {0} {1} {2}")
+    public int theAnswerTo(String firstValue, String operator, String secondValue) {
+
+        $("[ng-model=first]").sendKeys(firstValue);
+        $("[ng-model=operator]").selectByVisibleText(operator);
+        $("[ng-model=second]").sendKeys(secondValue);
+        $("#gobutton").click();
+        waitForAngularRequestsToFinish();
+
+        return Integer.parseInt($("css:h2").getText());
+    }
+}
+```
+
+A more readable, refactored implementation might look like this:
+
+```java
+public class CalculatorSteps extends UIInteractions {
+
+    private static final By FIRST_VALUE_FIELD = By.cssSelector("[ng-model=first]");
+    private static final By SECOND_VALUE_FIELD = By.cssSelector("[ng-model=second]");
+    private static final By OPERATOR_DROPDOWN = By.cssSelector("[ng-model=operator]");
+    private static final By GO_BUTTON = By.id("gobutton");
+    private static final By RESULT_FIELD = By.tagName("h2");
+    private static final Pattern A_VALID_NUMBER = Pattern.compile("-?\\d\\.?d*");
+
+    @Step
+    public void openTheCalculatorApp() {
+        openUrl("https://juliemr.github.io/protractor-demo/");
+    }
+
+    @Step("Calculate the answer to {0} {1} {2}")
+    public int theAnswerTo(String firstValue, String operator, String secondValue) {
+
+        $(FIRST_VALUE_FIELD).sendKeys(firstValue);
+        $(OPERATOR_DROPDOWN).selectByVisibleText(operator);
+        $(SECOND_VALUE_FIELD).sendKeys(secondValue);
+        $(GO_BUTTON).click();
+        waitFor(ExpectedConditions.textMatches(RESULT_FIELD,A_VALID_NUMBER));
+
+        return Integer.parseInt($(RESULT_FIELD).getText());
+    }
+}
+```
+
+The tests will now interact with the user interface, report on both the steps executed, and (if configured to do so) record screenshots for each step:
+
+![](img/calculator-step-screenshots.png)
+
+
+### Persona Step Libraries
+
+Another approach to modeling step libraries revolves around actors and roles. Let's return to our original example: Tracy, the traveller, who earns points when she travels.
+
+```java
 public class TravellerEarningStatusPoints {
 
     private String actor;
 
     private FrequentFlyer frequentFlyer;
 
-    /// [preamble]
-    /// [joins]
     @Step("#actor joins the frequent flyer program")   
     public void joins_the_frequent_flyer_program() {
         frequentFlyer = FrequentFlyer.withInitialBalanceOf(0);
     }
-    /// [joins]
 
     @Step("#actor flies {0} km")
     public void flies(int distance) {
@@ -312,47 +247,27 @@ public class TravellerEarningStatusPoints {
         // Left as an exercise
     }
 }
-/// [classbody]
-This would produce a report where both actors (Tracy and Troy) appear in different roles:
+```
 
-tracy and troy
-Note that a more elegant way to do this is by using the Screenplay pattern, where each actor can have their own browser and abilities.
+This approach uses the concept of _persona_ step libraries, where a step library represents the actions of a specific user performing a specific task (Tracy the traveller who is earning points.) In this case, Serenity will automatically instantiate the _actor_ field with the name of the step library variable (`tracy`), allowing it to appear in the test reports to make them more readable:
 
-Shared Instances of Step Libraries
+![](img/persona-steps.png)
+
+
+## Shared Instances of Step Libraries
 There are some cases where we want to reuse the same step library instance in different places across a test. For example, suppose we have a step library that interacts with a backend API, and that maintains some internal state and caching to improve performance. We might want to reuse a single instance of this step library, rather than having a separate instance for each variable.
 
 We can do this by declaring the step library to be shared, like this:
 
+```java
 @Steps(shared = true)
 CustomerAPIStepLibrary customerAPI;
-Now, any other step libraries of type CustomerAPIStepLibrary, that have the shared attribute set to true will refer to the same instance.
+```
+
+Now, any other step libraries of type `CustomerAPIStepLibrary`, that have the shared attribute set to true will refer to the same instance.
 
 In older versions of Serenity, sharing instances was the default behaviour, and you used the uniqueInstance attribute to indicate that a step library should not be shared. If you need to force this behaviour for legacy test suites, set the step.creation.strategy property to legacy in your serenity.properties file:
 
+```javascript
 step.creation.strategy = legacy
-Sharing instances using the @Shared annotation
-You can also use the @Shared annotation to share objects between steps and tasks in your test. The @Shared annotation is in practical terms a shortcut for @Steps(shared=true). This is handy in Screenplay tests, where the @Shared annotation reflects the intention more accurately than the @Steps annotation.
-
-For example, suppose you have a Screenplay task that you use to set up some reference data that you want to share between steps. You could set them up in a special task called PrepareReferenceTestData:
-
-givenThat(dana).wasAbleTo(PrepareReferenceTestData.inTheTestEnvironment());
-The PrepareReferenceTestData class would prepare test data and place the data in a Java class (say ReferenceData):
-
-public class PrepareReferenceTestData implements Task {
-    public static Performable inTheTestEnvironment() {
-            return instrumented(PrepareSomeCommonData.class);
-    }
-
-    @Shared
-    ReferenceData referenceData;
-
-    @Override
-    public <T extends Actor> void performAs(T actor) {
-        // Prepare reference data used in several tasks in a shared class
-        referenceData = ...
-    }
-}
-Any other Task, Interaction or Question class can then refer to the reference data, simply by declaring a shared field of type ReferenceData:
-
-@Shared
-ReferenceData referenceData; -->
+```

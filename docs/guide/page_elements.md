@@ -1,7 +1,7 @@
 ---
 id: page_elements
 title: Serenity Page Elements
-sidebar_position: 5
+sidebar_position: 6
 ---
 
 # Serenity Page Elements
@@ -34,24 +34,45 @@ import net.serenitybdd.screenplay.ui.Button;
 .
 .
 .
-$(Button.called("Login")).click();
+$(Button.withText("Login")).click();
 ```
 
 Or for a Screenplay test, you could do the following:
 
 ```java
 actor.attemptsTo(
-    Click.on(Button.called("Login"))
+    Click.on(Button.withText("Login"))
 );
 ```
 
-Under the hood, Serenity will look for `<button>` elements called "Logon" or `<input>` elements of type `submit`, with a _value_, _id_, or _data-test_ attribute of "login", or even a CSS class of "login".
+Under the hood, Serenity will look for either `<button>` elements, or `<input>` elements of type `submit`, that display the "Login" text. 
+
+Another common location strategy is to use attributes like `id` or `name`, or test-specific attributes like `data-test`. Suppose we have the following HTML code:
+
+```html
+<button type="button" class="btn btn-primary" data-test="login-button">Login</button>
+```
+
+We could click on this button with the following code:
+
+```java
+$(Button.withNameOrId("login-button")).click();
+```
+
+Or in Screenplay, we could do the following:
+```java
+actor.attemptsTo(
+    Click.on(Button.withNameOrId("login-button"))
+);
+```
+
+In this case, Serenity will look for `<button>` elements, or `<input>` elements of type `submit`, with a _value_, _id_, _data-test_ or _aria-label_ attribute of "login-button".
 
 This means that, in many cases, you can use the `Button` class directly in your code, without having to inspect the page structure first.
 
 Serenity Page Elements are found in the `serenity-screenplay-webdriver` module, but they can be used in both Screenplay and Action Class-based tests.
 
-There are many different types of page elements available. All of them have the `named()` method, but some have other methods for more specific locator strategies, such as `withLabel()` for checkboxes.
+There are many different types of page elements available. All of them have the `withNameOrId()` method, but some have other methods for more specific locator strategies, such as `withLabel()` for checkboxes.
 
 Let's look at each type of page element in more detail.
 
@@ -64,6 +85,7 @@ Suppose we have the following HTML code:
 <button type="button">A Button</button>
 <input type="submit" value="Submit Me!" name="submit-button" data-test="submit-the-button">
 <input type="button" value="Press Here">
+<button type="button"><i class="glyphicon glyphicon-home"></i>Home</button>
 ```
 
 
@@ -71,13 +93,14 @@ We could use the following expressions to identify these elements:
 
 | Strategy    | Example     |
 | ----------- | ----------- |
-| By text     | Button.called("A Button")             |
-| By value    | Button.called("Press Here")           |
-| By name     | Button.called("submit-button")                           |
-| By data-test attribute     | Button.called("submit-the-button")        |
+| By text     | Button.withText("A Button")             |
+| By value    | Button.withText("Press Here")           |
+| By name     | Button.withNameOrId("submit-button")                           |
+| By data-test attribute     | Button.withNameOrId("submit-the-button")        |
+| By icon     | Button.withIcon("glyphicon-home")        |
 
 :::tip
-The `called()` method will match the `id`, `name`, or `data-test` attribute for any kind of Page Element, so we won't repeat them everywhere in the following sections.
+The `withNameOrId()` method will match the `id`, `name`, `data-test` or `aria-label` attribute for any kind of Page Element, so we won't always repeat them everywhere in the following sections.
 :::
 
 ## Checkbox
@@ -86,11 +109,11 @@ _data-test_, or _class_ attribute value.
 
 Suppose we have the following HTML:
 ```html
-<input type="checkbox" id="vehicle1" value="Bike" class="bikeride">
+<input type="checkbox" id="vehicle1" value="Bike" class="vehicule-option">
 <label for="vehicle1"> I have a bike</label><br>
-<input type="checkbox" id="vehicle2" value="Car" class="field-style">
+<input type="checkbox" id="vehicle2" value="Car" class="vehicule-option">
 <label for="vehicle2"> I have a car</label><br>
-<input type="checkbox" id="vehicle3" value="Boat" checked>
+<input type="checkbox" id="vehicle3" value="Boat" class="vehicule-option" checked>
 <label for="vehicle3"> I have a boat</label><br>
 ```
 
@@ -98,7 +121,7 @@ We could use the following expressions to identify these elements:
 
 | Strategy    | Example     |
 | ----------- | ----------- |
-| By id       | Checkbox.called("vehicle1")           |
+| By id       | Checkbox.withNameOrId("vehicle1")           |
 | By value    | Checkbox.withValue("Bike")            |
 | By label    | Checkbox.withLabel("I have a bike")   |
 
@@ -120,7 +143,7 @@ We could use the following expressions to identify these elements:
 
 | Strategy              | Example     |
 | -----------           | ----------- |
-| By name or id         | Dropdown.called("cars")           |
+| By name or id         | Dropdown.withNameOrId("cars")           |
 | By label         | Dropdown.withLabel("Choose a car:")          |
 | By default option         | Dropdown.withLabel("---Pick Your Car---")          |
 
@@ -155,8 +178,8 @@ We could use the following expressions to identify these elements:
 
 | Strategy        | Example     |
 | -----------     | ----------- |
-| By name         | InputField.called("customername")           |
-| By id           | InputField.called("customer_name")           |
+| By name         | InputField.withNameOrId("customername")           |
+| By id           | InputField.withNameOrId("customer_name")           |
 | By placeholder  | InputField.withPlaceholder("Enter the customer name")              |
 | By label        | InputField.withLabel("Customer Name")   |
 
@@ -177,7 +200,7 @@ We could use the following expressions to identify these elements:
 
 | Strategy              | Example     |
 | -----------           | ----------- |
-| By link text          | Link.called("Link 1")           |
+| By link text          | Link.withText("Link 1")           |
 | By link title         | Link.withTitle("Link Number 2")          |
 | By partial link text  | Link.containing("ink")              |
 | By starting text      | Link.startingWith("Link")    |
@@ -209,9 +232,9 @@ We could use the following expressions to identify elements in this code:
 
 | Strategy                    | Example     |
 | -----------                 | ----------- |
-| By id                       | PageElement.called("container")           |
-| By data-test value          | PageElement.called("the-container")           |
-| Containing a text value           | PageElement.called("item").containingText("Item 1")         |
+| By id                       | PageElement.withNameOrId("container")           |
+| By data-test value          | PageElement.withNameOrId("the-container")           |
+| Containing a text value           | PageElement.withNameOrId("item").containingText("Item 1")         |
 | Containing a text value (with a CSS locator)          | PageElement.locatedBy(".item").containingText("Item 1")         |
 
 ## RadioButton
@@ -232,6 +255,32 @@ We could use the following expressions to identify these elements:
 
 | Strategy              | Example     |
 | -----------           | ----------- |
-| By id          | RadioButton.called("html")           |
+| By id          | RadioButton.withNameOrId("html")           |
 | By label         | RadioButton.withLabel("Choose CSS")         |
 | By value  |RadioButton.withValue("JavaScript")            |
+
+
+# Using Page Elements in Action Classes
+
+You can also use Page Elements in your normal (non-Screenplay) tests, simply by using the Page Element expression as a locator. For example:
+
+```java
+public class LoginActions extends UIInteractionSteps {
+
+    @Step("Login as a standard user")
+    public void asAStandardUser() {
+        $(InputField.withPlaceholder("Username")).type("standard_user");
+        $(InputField.withPlaceholder("Password")).type("secret_sauce");
+        $(Button.withText("Login")).click();
+    }
+}
+```
+
+Page Elements can be used with all of the usual methods for locating elements in a UI Interaction class, including:
+
+| Method              | Example     |
+| -----------         | ----------- |
+| $                   | $(Button.withText("Login")).click();          |
+| find                | find(Button.withText("Login")).click();       |
+| $$                  | $$(Checkbox.withNameOrId("vehicle-option")).forEach(WebElementFacade::click);       |
+| findAll             | findAll(Checkbox.withNameOrId("vehicle-option")).forEach(WebElementFacade::click);       |

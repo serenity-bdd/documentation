@@ -4,6 +4,13 @@ In addition to the `Target` class, Screenplay gives us a number of convenient cl
 
 All of these classes can be found in the `net.serenitybdd.screenplay.webtests.ui` package. All of these classes can be used anywhere a `Target` can be used.
 
+## Page Elements
+Any HTML element can identified using the `byNameOrId()` method. This method with check the following attributes, ignoring case:
+  - id
+  - name
+  - data-test
+  - aria-label
+
 ## Forms
 ### Buttons
 
@@ -17,7 +24,7 @@ The `Button` class is quite flexible. Consider the following HTML representation
 All of these would work with the following code:
 
 ```java
-wendy.attemptsTo(Click.on(Button.called("Login")));
+wendy.attemptsTo(Click.on(Button.withText("Login")));
 ```
 
 ### Input Fields

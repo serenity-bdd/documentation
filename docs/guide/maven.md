@@ -73,7 +73,48 @@ For Cucumber you will need the following dependency:
 </dependency>
 ```
 
-Since Serenity relies on a specific version of the Cucumber APIs, we do not recommend including an exlicit dependency on a particular version of the Cucumber libraries.
+Since Serenity relies on a specific version of the Cucumber APIs, we recommend using the same version of the Cucumber libraries.
+
+Cucumber requires a test runner, either JUnit 4 or JUnit 5.
+
+## Cucumber with JUnit 4 Dependencies
+To use JUnit 4 you will need the following dependency:
+
+```
+<dependency>
+    <groupId>io.cucumber</groupId>
+    <artifactId>cucumber-junit</artifactId>
+    <version>${cucumber.version}</version>
+    <scope>test</scope>
+</dependency>
+<dependency>
+    <groupId>org.junit.platform</groupId>
+    <artifactId>junit-vintage-engine</artifactId>
+    <version>${junit5.version}</version>
+    <scope>test</scope>
+</dependency>
+```
+
+## Cucumber with JUnit 5 Dependencies
+To use JUnit 5 you will need the following dependency:
+
+```
+<dependency>
+    <groupId>io.cucumber</groupId>
+    <artifactId>cucumber-junit-platform-engine</artifactId>
+    <version>${cucumber.version}</version>
+    <scope>test</scope>
+</dependency>
+<dependency>
+    <groupId>org.junit.platform</groupId>
+    <artifactId>junit-platform-suite</artifactId>
+    <version>${junit-platform.version}</version>
+    <scope>test</scope>
+</dependency>
+```
+
+See cucumber-junit-platform-engine documentation on using junit-platform-suite to pilot cucumber: https://github.com/cucumber/cucumber-jvm/tree/main/junit-platform-engine#suites-with-different-configurations, and https://github.com/serenity-bdd/serenity-cucumber-starter for a running example.
+
 
 ## Screenplay
 If you are using the Screenplay pattern, you will also need the Screenplay dependencies:

@@ -950,3 +950,95 @@ You can also override this behaviour at any point by calling the `reenableDriver
 ```java
 Serenity.webdriver().reenableDrivers();
 ```
+
+## Extending Serenity WebDriver Integration
+
+Serenity offers a simple way to extend the default WebDriver capabilities and customise the driver creation and teardown activities. Simply implement the `BeforeAWebdriverScenario` and/or the `AfterAWebDriverScenario` interfaces (both are in the `net.serenitybdd.core.webdriver.enhancers` package). Serenity will execute `BeforeAWebdriverScenario` classes just before a driver instance is created, allowing you to add customised options to the driver capabilities. Any `AfterAWebDriverScenario` are executed at the end of a test, just before the driver is closed.
+
+### The BeforeAWebdriverScenario interface
+
+The `BeforeAWebdriverScenario` is used to enhance the `Capabilities` object that will be passed to the WebDriver instance when a new driver is created. The method call passes in the requested driver and the `TestOutcome` object, which contains information about the name and tags used for this test. It also passes in the `EnvironmentVariables`, which gives you access to the current environment configuration. An example of a simple `BeforeAWebdriverScenario` is shown below:
+
+```java
+public class MyCapabilityEnhancer implements BeforeAWebdriverScenario {
+
+    @Override
+    public DesiredCapabilities apply(EnvironmentVariables environmentVariables,
+                                     SupportedWebDriver driver,
+                                     TestOutcome testOutcome,
+                                     MutableCapabilities capabilities) {
+        capabilities.setCapability("name", testOutcome.getStoryTitle() + " - " + testOutcome.getTitle());
+        return capabilities;
+    }
+}
+```
+
+### The AfterAWebdriverScenario interface
+
+The `AfterAWebdriverScenario` is called at the end of a test, just before the driver is closed, and once the result of the test is known. The test result (and other details) can be obtained from the `TestOutcome` parameter. This allows any last manipulations or checks to be performed on the driver, before the end of the test. The following example checks the result of the test that has just finished, and adds a cookie with a value depending on the test outcome:
+
+```java
+public class MyTestResultUpdater implements AfterAWebdriverScenario {
+    void apply(EnvironmentVariables environmentVariables,
+               TestOutcome testOutcome,
+               WebDriver driver) {
+       if ((driver == null) || (!RemoteDriver.isARemoteDriver(driver))) {
+           return;
+       }
+
+       Cookie cookie = new Cookie("testPassed",
+                                   testOutcome.isFailure() || testOutcome.isError() || testOutcome.isCompromised() ? "false" : "true");
+       driver.manage().addCookie(cookie);
+    }
+}
+```
+
+### Driver Enhancers
+
+If you need to perform some action on the driver instance before each test, you can implement the `CustomDriverEnhancer` class. Note that this will be called immediately after the driver is created, and before any page is opened, so the number of actions is relatively limited.
+
+### Configuring the extension packages
+
+The last thing you need to do is to tell Serenity what package it needs to look for your extension classes. Add the package, or a parent package to your Serenity configuration using the `serenity.extension.packages`.
+
+`serenity.extension.packages=com.acme.myserenityextensions`
+
+You can find an example of how these classes are implemented in a real-world use case in the [serenity-browserstack](https://github.com/serenity-bdd/serenity-core/tree/master/serenity-browserstack/src/main/java/net/serenitybdd/browserstack) module on Github.
+
+
+### Custom WebDriver implementations
+
+You can add your own custom WebDriver provider by implementing the DriverSource interface. First, you need to set up the following system properties (e.g. in your `serenity.properties` file):
+
+```
+webdriver.driver = provided
+webdriver.provided.type = mydriver
+webdriver.provided.mydriver = com.acme.MyPhantomJSDriver
+thucydides.driver.capabilities = mydriver
+```
+
+Your custom driver must implement the DriverSource interface, as shown here:
+
+```java
+public class MyPhantomJSDriver implements DriverSource {
+
+    @Override
+    public WebDriver newDriver() {
+        try {
+            DesiredCapabilities capabilities = DesiredCapabilities.phantomjs();
+            // Add
+            return new PhantomJSDriver(ResolvingPhantomJSDriverService.createDefaultService(), capabilities);
+        }
+        catch (IOException e) {
+            throw new Error(e);
+        }
+    }
+
+	@Override
+    public boolean takesScreenshots() {
+        return true;
+    }
+}
+```
+
+Note that if you use custom drivers you will be entirely responsible for configuring and instantiating the browser instance, and the driver-related Serenity configuration options will not apply. We generally recommend using custom drivers only for very exceptional circumstances, and using `BeforeAWebdriverScenario` classes for most custom configuration requirements.

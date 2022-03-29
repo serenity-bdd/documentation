@@ -1,7 +1,7 @@
 ---
 id: page_elements
 title: Serenity Page Elements
-sidebar_position: 6
+sidebar_position: 7
 ---
 
 # Serenity Page Elements
@@ -47,7 +47,9 @@ actor.attemptsTo(
 
 Under the hood, Serenity will look for either `<button>` elements, or `<input>` elements of type `submit`, that display the "Login" text. 
 
-Another common location strategy is to use attributes like `id` or `name`, or test-specific attributes like `data-test`. Suppose we have the following HTML code:
+Another common location strategy is to use attributes like `id` or `name`, or test-specific attributes like `data-test`. 
+
+Suppose we have the following HTML code:
 
 ```html
 <button type="button" class="btn btn-primary" data-test="login-button">Login</button>
@@ -72,7 +74,21 @@ This means that, in many cases, you can use the `Button` class directly in your 
 
 Serenity Page Elements are found in the `serenity-screenplay-webdriver` module, but they can be used in both Screenplay and Action Class-based tests.
 
-There are many different types of page elements available. All of them have the `withNameOrId()` method, but some have other methods for more specific locator strategies, such as `withLabel()` for checkboxes.
+There are many different types of page elements available. All of them have the `withNameOrId()` method, but some have other methods for more specific locator strategies, such as `withLabel()` for checkboxes. 
+
+The following table gives an overview of the different types of PageElement available:
+
+| Element type     | Example     |
+| ---------------- | ----------- |
+| Buttons          | Button.withText("A Button")             |
+| Checkboxes       | Checkbox.withValue("Ferrari")          |
+| Dropdowns        | Dropdown.withLabel("---Pick Your Car---")          |
+| Images           | Image.withAltText("Girl in a jacket")          |
+| Input Fields     | InputField.withPlaceholder("Enter the customer name")         |
+| Link             | Link.withIcon("glyphicon-cloud")       |
+| PageElement      | PageElement.locatedBy(".item").containingText("Item 1")      |
+| RadioButton      | RadioButton.withNameOrId("red-button")      |
+
 
 Let's look at each type of page element in more detail.
 

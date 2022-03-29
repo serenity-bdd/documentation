@@ -13,13 +13,13 @@ To run this tutorial, you will need a few things installed on your machine:
 
 ## Creating Your First Serenity BDD Project
 
-We will be using the **[Serenity BDD with JUnit](https://github.com/serenity-bdd/serenity-junit-starter)** template project to get a simple project up and running quickly.
+We will be using the **[Serenity BDD with JUnit and Screenplay](https://github.com/serenity-bdd/serenity-junit-screenplay-starter)** template project to get a simple project up and running quickly.
 
 :::note
 We'll be using a fairly conventional test automation style in this tutorial, using action classes and page objects. In the next tutorial we'll see how to do all this using the Screenplay Pattern.
 :::
 
-Go to the [project template page on Githuib](https://github.com/serenity-bdd/serenity-junit-starter) and click on [Use This Template](https://github.com/serenity-bdd/serenity-junit-starter/generate).
+Go to the [project template page on Githuib](https://github.com/serenity-bdd/serenity-junit-screenplay-starter) and click on [Use This Template](https://github.com/serenity-bdd/serenity-junit-screenplay-starter/generate).
 
 ![](img/junit-template.png)
 

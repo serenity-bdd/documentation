@@ -2,7 +2,7 @@
 sidebar_position: 1
 ---
 
-# Your First Serenity BDD Test
+# Your First Web Test
 In this tutorial you'll write your very first Serenity BDD test, using JUnit 5 and Selenium. We'll start out simple, then explore some of the features that make Serenity BDD rather special. So lets get started!
 
 ## Pre-requisites

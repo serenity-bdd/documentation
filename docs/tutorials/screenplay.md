@@ -1,6 +1,6 @@
 ---
 id: screenplay
-sidebar_position: 2
+sidebar_position: 4
 ---
 
-# Your First Serenity Screenplay Test
+# Your First Screenplay Scenario

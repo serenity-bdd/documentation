@@ -3,28 +3,31 @@ import clsx from 'clsx';
 import styles from './Sponsors.module.css';
 
 const SponsorList = [
-  // {
-  //   title: 'BrowserStack',
-  //   logo: 'https://www.selenium.dev/images/sponsors/browserstack.png',
-  //   link: 'https://www.browserstack.com/'
-  // },
-  // {
-  //   title: 'SauceLabs',
-  //   logo: 'https://www.selenium.dev/images/sponsors/saucelabs.png',
-  //   link: 'http://saucelabs.com/'
-  // },
-  // {
-  //   title: 'Applitools',
-  //   logo: 'https://www.selenium.dev/images/sponsors/applitools.png',
-  //   link: 'https://applitools.com/'
-  // },
+  {
+    title: 'LambdaTest',
+    logo: '../../static/img/sponsors/lambda-test.png',
+    link: 'https://www.lambdatest.com/',
+    description: 'Perform Automated and Live Interactive Cross Browser Testing on 3000+ Real Browsers and Operating Systems Online.'
+  },
+  {
+    title: 'BrowserStack',
+    logo: '../../static/img/sponsors/browserstack.png',
+    link: 'https://www.browserstack.com/',
+    description: 'Give your users a seamless experience by testing on 3000+ real devices and browsers. Don\'t compromise with emulators and simulators.'
+  },
+  {
+    title: 'Serenity Dojo',
+    logo: '../../static/img/sponsors/serenity-dojo.png',
+    link: 'https://www.serenity-dojo.com/',
+    description: 'Start Learning Real-World Test Automation Today with a proven programme that will set you apart from your peers.'
+  },
 ];
 
-function Sponsor({logo, title, description}) {
+function Sponsor({logo, title, link, description}) {
   return (
     <div className={clsx('col col--4')}>
-      <img src={logo} title={title}/>
-
+      <a href={link}><img src={logo} title={title}/></a>
+      <p>{description}</p>
     </div>
   );
 }
@@ -32,7 +35,7 @@ function Sponsor({logo, title, description}) {
 export default function Sponsors() {
   return (
     <section className={styles.features}>
-      {/* <h2 className={styles.sponsorsTitle}>Platinum Sponsors</h2> */}
+      <h2 className={styles.sponsorsTitle}>Platinum Sponsors</h2>
       <div className="container">
         <div className="row">
           {SponsorList.map((props, idx) => (

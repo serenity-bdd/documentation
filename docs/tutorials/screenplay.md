@@ -37,14 +37,119 @@ As you can see here, Screenplay uses a user-centric model, where we describe _ac
 
 ## Creating a Screenplay project
 
+### Using the Serenity template projects
 The quickest way to start a new Screenplay project is to clone one of the starter projects. For this tutorial, we will start with the [Serenity JUnit Screenplay Starter project](https://github.com/serenity-bdd/serenity-junit-screenplay-starter), which uses Serenity Screenplay and JUnit 5.
-
 
 :::tip
 This starter project has a sample Screenplay test in the `src/test/java/starter/wikipedia` folder. You won't need this code for this tutorial so you can safely delete it.
 :::
 
+### The project directory structure
+We will use some simple conventions to organise our test classes, based on the standard Maven project structure you can see here:
+
+![](img/screenplay-directory-layout.png)
+
+Our test code will be stored in two folders, underneath `src/test/java/todomvc`. The first directory, `features`, will contain our test classes. The second, `screenplay`, will contain our Screenplay classes. Screenplay classes are designed to be highly modular and reusable, and often appear in many tests, so it makes sense to keep them separate from the tests themselves.
+
+Serenity organises JUnit test results based on the package structure we use, so we need to tell it the name of the root package where our tests will live. We do this in the `serenity.conf` file in the `src/test/resources` folder. Open this file and add the following line:
+
+```
+serenity.test.root = todomvc.features
+```
+
 ## Writing your first scenario
 
-For our 
+### Creating the test case 
+For our first scenario, we will simply add a todo item (say, "Buy some milk") to an empty list. 
+
+Start by creating a new empty test case under the `src/test/java/todomvc/features` package like this:
+
+```java
+package todomvc.features;
+
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+
+@ExtendWith(SerenityJUnit5Extension.class)
+class AddNewTodos {
+
+    @Test
+    @DisplayName("Add a todo item to an empty list")
+    void addToEmptyList() {
+    }
+}
+```
+
+The `@ExtendWith(SerenityJUnit5Extension.class)` line indicates that this is a Serenity BDD test.
+
+### Introducing the actor
+
+Screenplay uses an actor-centric approch, where our tests describe _actors_, who represent actual users of our application, and the actions they perform. 
+
+In a Serenity BDD JUnit test, we can use the `@CastMember` annotation to declare an actor like this:
+
+```java
+    @CastMember(name = "Toby")
+    Actor toby;
+```
+
+This will instantiate a new actor (called Toby) for our test, and assign a webdriver instance that he can use to interact with our application. 
+
+### Actors perform tasks and interactions
+In a Screenplay test, everything starts with the actor, who interacts with the system under test to achieve their goals. In this case, the first thing Toby needs to do is to open the TodoMvc application at a given URL. We do this by calling the `attemptsTo()` method on the `Actor` class. The `attemptsTo()` method takes a list of actions that the actor needs to perform. We call these actions _performables_. We generally talk about two types of _performables_:
+  - _Interactions_, where the actor interacts directly with the application (Click a button or Open a URL), and
+  - _Tasks_, which are groups of interactions that the actor needs to perform to achieve some goal (Add an item to the cart or purchase an item).
+
+An example of a simple Interaction is the `Open.url()` interaction, which opens a given URL. 
+
+```java
+Open.url("https://todomvc.com/examples/angularjs/#/")
+```
+
+In our "add a todo item to an empty list" test, the first step will be for Toby to open the browser on the TodoMVC application home page. We can do this withe the following code:
+
+```java
+@Test
+@DisplayName("Add a todo item to an empty list")
+void addToEmptyList() {
+    toby.attemptsTo(
+        Open.url("https://todomvc.com/examples/angularjs/#/")
+    );
+}
+```
+
+### Actors can interact with a web application
+
+The next thing we need to do is to enter a value into the input field on the TodoMVC home page that you can see here:
+
+![](img/todomvc-input.png)
+
+To enter a value into a field, we can use the `Enter` interaction class. This field can be located using a CSS locator like _".new-todo". So to enter the value into this field, we can use the following interaction:
+
+```java
+Enter.theValue("Buy some milk").into(".new-todo")
+```
+
+There is no submit button on this form - to add the item to the list we need to click on the _RETURN_ key. We can do this by adding the `thenHit()` method, like this:
+
+```java
+Enter.theValue("Buy some milk").into(".new-todo").thenHit(Keys.RETURN)
+```
+
+When we add this to our test, we get the following:
+
+```java
+@Test
+@DisplayName("Add a todo item to an empty list")
+void addToEmptyList() {
+    toby.attemptsTo(
+        Open.url("https://todomvc.com/examples/angularjs/#/"),
+        Enter.theValue("Buy some milk").into(".new-todo").thenHit(Keys.RETURN)
+    );
+}
+```
+
+
 

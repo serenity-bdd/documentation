@@ -151,5 +151,105 @@ void addToEmptyList() {
 }
 ```
 
+### Actors can ask about the state of the system
+
+Once Toby hits RETURN, the item will be added to the todo list, as we can see here:
+
+![](img/todo-list-1-item.png)
+
+Now we need to check that the item we entered was successfully added to this list. In Screenplay we do this using _Questions_. A Question is a class that knows how to retrieve a specific piece of information about the state of the application. This could be the value of a text field, the result of a REST API call, or even the result of a database query. 
+
+In this case, we can identify the names of the todo items in the list using a CSS locator such as ".todo-list li". So a _question_ to retrieve each of the todo items displayed on the page might look like this:
+```java
+Text.ofEach(".todo-list li")
+```
+
+A question does nothing by itself - just as we need an actor to perform an interaction, we also need an actor to ask a question. 
+
+One way we do this is to use the `asksFor() method, like this:
+
+```java
+        var todos = toby.asksFor(Text.ofEach(".todo-list label"));
+```
+
+If we add an AssertJ assertion to check that the list contains the value we expect, our completed test will look like the following:
+
+```java
+import net.serenitybdd.junit5.SerenityJUnit5Extension;
+import net.serenitybdd.screenplay.Actor;
+import net.serenitybdd.screenplay.actions.Enter;
+import net.serenitybdd.screenplay.actions.Open;
+import net.serenitybdd.screenplay.annotations.CastMember;
+import net.serenitybdd.screenplay.questions.Text;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.openqa.selenium.Keys;
+
+import static org.assertj.core.api.Assertions.assertThat;
+
+@ExtendWith(SerenityJUnit5Extension.class)
+class AddNewTodos {
+
+    @CastMember(name = "Toby")
+    Actor toby;
+
+    @Test
+    @DisplayName("Add a todo item to an empty list")
+    void addToEmptyList() {
+        toby.attemptsTo(
+                Open.url("https://todomvc.com/examples/angularjs/#/"),
+                Enter.theValue("Buy some milk").into(".new-todo").thenHit(Keys.RETURN)
+        );
+        var todos = toby.asksFor(Text.ofEach(".todo-list li"));
+        assertThat(todos).containsExactly("Buy some milk");
+    }
+}
+
+```
+
+## Generating the reports
+
+Let's run the tests and see what the reports look like. Just run `mvn clean verify` from the command line. You should see an output along the following lines:
+
+```bash
+$ mvn verify
+...
+[INFO] -----------------------------------------
+[INFO]  SERENITY TESTS: SUCCESS
+[INFO] -----------------------------------------
+[INFO] | Test cases executed    | 1
+[INFO] | Tests executed         | 1
+[INFO] | Tests passed           | 1
+[INFO] | Tests failed           | 0
+[INFO] | Tests with errors      | 0
+[INFO] | Tests compromised      | 0
+[INFO] | Tests aborted          | 0
+[INFO] | Tests pending          | 0
+[INFO] | Tests ignored/skipped  | 0
+[INFO] ------------------------ | --------------
+[INFO] | Total Duration         | 7s 292ms
+[INFO] | Fastest test took      | 7s 292ms
+[INFO] | Slowest test took      | 7s 292ms
+[INFO] -----------------------------------------
+[INFO]
+[INFO] SERENITY REPORTS
+[INFO]   - Full Report: file:///C:/Users/johns/projects/todomvc-screenplay-tutorial/target/site/serenity/index.html
+[INFO]
+[INFO] --- maven-failsafe-plugin:3.0.0-M5:verify (default) @ serenity-junit-screenplay-starter ---
+[INFO] ------------------------------------------------------------------------
+[INFO] BUILD SUCCESS
+[INFO] ------------------------------------------------------------------------
+[INFO] Total time:  21.660 s
+[INFO] Finished at: 2022-04-04T13:34:26+01:00
+[INFO] ------------------------------------------------------------------------
+```
+
+Now open the `index.html` file in the `target/site/serenity` directory, and navigate to the Test Results tab. Open up the "Add a todo item to an empty list" scenario. Notice how the report renders the actor's actions almost word-for-word:
+
+![](img/screenplay-report-1.png)
 
 
+## Conclusion
+
+You have now seen just a little of the power of the Screenplay pattern. To learn more about what you can do with the Screenplay pattern, check out [the full Screenplay Documentation](../../docs/screenplay/user_guide_intro_screenplay)

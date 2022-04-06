@@ -1,5 +1,5 @@
 ---
-id: user_guide_intro_screenplay
+id: user_guide_screenplay_intro
 sidebar_position: 1
 ---
 # Screenplay Fundamentals
@@ -267,24 +267,32 @@ In these situations, we can use the `OnStage.theActorInTheSpotlight()` method to
     }
 ```
 
-## Leveraging Screenplay Abilities
+## Grouping interactions into tasks
+
+Screenplay aims to make it easy to write maintainable and scaleable automation code. And an important way to do this is by grouping interactions into reusable sequences that represent higher level domain concepts.
+
+For example, the following test shows how to login to the https://www.saucedemo.com/ test site:
+
+```java
+        toby.attemptsTo(
+                Open.url("https://www.saucedemo.com/"),
+                Enter.theValue("standard_user").into("#user-name"),
+                Enter.theValue("secret_sauce").into("#password"),
+                Click.on("#login-button")
+        );
+```
 
 
+For example, in the previous section we saw the following code:
 
-To interact with an application under test, we need
-
-## Opening a URL
-
-
-
-
-
-
-## Grouping Interactions into Tasks
-
-### Using the Tasks class
-
-### Creating your own Performables
+```java
+    toby.attemptsTo(
+            Open.url("https://todomvc.com/examples/angularjs/#/")
+    );
+```
 
 
-  
+## Questions - querying the state of the system
+
+Now that we have seen how to set up a Screenplay test using different frameworks, how to organise interactions into tasks, and how to query the state of the system, we will look at how to use Screenplay to interact with a web application in more detail.
+

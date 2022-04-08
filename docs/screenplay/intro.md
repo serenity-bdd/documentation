@@ -336,6 +336,76 @@ or
 
 So far we havce seen how to create a _Task_ from a list of other tasks or interactions. But sometimes we need to have more control over the logic of our task. We can do this very easily using lambda expressions, which give us total control over how our task should work. 
 
+For example, imagine we have refactored our TodoMVC example above to use the following Task class to open the TodoMVC application with an empty list:
+
+```java
+
+public class Start {
+    public static Performable withAnEmptyTodoList() {
+        return Task.where("{0} starts with an empty todo list",
+                Open.url("https://todomvc.com/examples/angularjs/#/")
+        );
+    }
+```
+
+We could also create a task to add a todo item to the list:
+
+```java
+public class AddATodoItem {
+    public static Performable called(String thingToDo) {
+        return Task.where("{0} adds a todo item called " + thingToDo,
+                Enter.theValue(item).into(".new-todo").thenHit(Keys.RETURN)
+        );
+    }
+}
+```
+
+Now suppose we want to allow Toby to start with some elements already in his list. We could imagine a new `Start.withAListContainingTheItems(...)` method like this:
+
+```java
+        toby.attemptsTo(
+                Start.withAListContaingTheItems("Feed the cat","Buy some bread")
+        );
+```
+
+However to implement this method, we need to loop over the provided list of items, and call the `AddATodoItem` task for each of them. We can do this by using a Lambda expression instead of a list of _Performable_s. The Lambda expression takes an actor as a parameter, and allows us to write arbitrary blocks of code to implement our task. For example, the `withAListContaingTheItems()` method might look like the following:
+
+```java
+    public static Performable withAListContaingTheItems(String... items) {
+        return Task.where("{0} starts with a list containing " + Arrays.asList(items),
+                actor -> {
+                    actor.attemptsTo(Start.withAnEmptyTodoList());
+                    for (String item : items) {
+                        actor.attemptsTo(AddATodoItem.called(item));
+                    }
+                }
+        );
+```
+
+The full `Start` class would now look like this:
+
+```java
+public class Start {
+    public static Performable withAnEmptyTodoList() {
+        return Task.where("{0} starts with an empty todo list",
+                Open.url("https://todomvc.com/examples/angularjs/#/")
+        );
+    }
+
+    public static Performable withAListContaingTheItems(String... items) {
+        return Task.where("{0} starts with a list containing " + Arrays.asList(items),
+                actor -> {
+                    actor.attemptsTo(Start.withAnEmptyTodoList());
+                    for (String item : items) {
+                        actor.attemptsTo(AddATodoItem.called(item));
+                    }
+                }
+        );
+    }
+}
+
+```
+
 ### Writing custom Performable classes.
 
 

@@ -282,14 +282,62 @@ For example, the following test shows how to login to the https://www.saucedemo.
         );
 ```
 
+These four lines involve all login in to the site. However it is hard to see that at a glance when reading the code. We could make this code much more readable by grouping these interactions into a single task. 
 
-For example, in the previous section we saw the following code:
+### Grouping interactions using the Task class
+A better approach would be to group these related interactions into a single `Task`. 
+
+The simplest way to do this is to use the `Task.where()` method. This method lets us return a task (or more precisely, an implementation of the `Performable` interface) that combines several other tasks or interactions. 
+
+The task that allows an actor to login as a standard user could look like this:
 
 ```java
-    toby.attemptsTo(
-            Open.url("https://todomvc.com/examples/angularjs/#/")
-    );
+public class Login {
+    public static Task asAStandardUser() {
+        return Task.where(
+                Open.url("https://www.saucedemo.com/"),
+                Enter.theValue("standard_user").into("#user-name"),
+                Enter.theValue("secret_sauce").into("#password"),
+                Click.on("#login-button")
+        );
+    }
+}
 ```
+
+We might want to make our task more configurable, by adding some parameters to the method signature. In this case, it is useful to make our task more descriptive by adding a text description before the list of _Performable_s, as shown below. This description will appear in the reports whenever the task is executed. The `{0}` in the description will be replaced by the name of the actor (so "Toby" in our test). 
+
+```java
+public class Login {
+    public static Performable as(String username, String password) {
+        return Task.where(
+                "{0} logs in as " + username,
+                Open.url("https://www.saucedemo.com/"),
+                Enter.theValue(username).into("#user-name"),
+                Enter.theValue(password).into("#password"),
+                Click.on("#login-button")
+        );
+    }
+}
+```
+
+We can now refactor our original test using this method:
+
+```java
+        toby.attemptsTo(Login.asAStandardUser());
+```
+
+or
+
+```java
+        toby.attemptsTo(Login.as("standard_user","secret_sauce"));
+```
+
+### Using lambda expressions to create custom tasks
+
+So far we havce seen how to create a _Task_ from a list of other tasks or interactions. But sometimes we need to have more control over the logic of our task. We can do this very easily using lambda expressions, which give us total control over how our task should work. 
+
+### Writing custom Performable classes.
+
 
 
 ## Questions - querying the state of the system

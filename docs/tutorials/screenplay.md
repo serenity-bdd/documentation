@@ -252,4 +252,4 @@ Now open the `index.html` file in the `target/site/serenity` directory, and navi
 
 ## Conclusion
 
-You have now seen just a little of the power of the Screenplay pattern. To learn more about what you can do with the Screenplay pattern, check out [the full Screenplay Documentation](../../docs/screenplay/user_guide_intro_screenplay)
+You have now seen just a little of the power of the Screenplay pattern. To learn more about what you can do with the Screenplay pattern, check out [the full Screenplay Documentation](../screenplay/screenplay_fundamentals)

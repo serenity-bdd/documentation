@@ -5,7 +5,7 @@ import styles from './HomepageFeatures.module.css';
 const FeatureList = [
   {
     title: 'Bring Your Team Together',
-    Svg: require('../../static/img/icon_1.svg').default,
+    Svg: require('./img/icon_1.svg').default,
     description: (
       <>
         Don’t be a lonely tester writing scripts in a corner, create test automation frameworks that your whole team enjoys using.
@@ -14,7 +14,7 @@ const FeatureList = [
   },
   {
     title: 'Automate At Scale',
-    Svg: require('../../static/img/icon_2.svg').default,
+    Svg: require('./img/icon_2.svg').default,
     description: (
       <>
         Write clean, high quality, easily maintained automation code that scales with your test suite, so that you spend your time writing new scenarios, not fixing existing ones.
@@ -23,7 +23,7 @@ const FeatureList = [
   },
   {
     title: 'Report What Really Matters',
-    Svg: require('../../static/img/icon_3.svg').default,
+    Svg: require('./img/icon_3.svg').default,
     description: (
       <>
         Serenity BDD provides powerful living documentation and test resporting that gives meaningful feedback to testers, business folk, and the team as a whole. Serenity tells you not only what tests have been executed, but more importantly, what requirements have been tested.
@@ -32,7 +32,7 @@ const FeatureList = [
   },
   {
     title: 'Test UI, API and Mobile',
-    Svg: require('../../static/img/icon_4.svg').default,
+    Svg: require('./img/icon_4.svg').default,
     description: (
       <>
         Serenity supports both UI and API testing, and integrates seemlessly with standard industry tools such as Selenium 4 and RestAssured.
@@ -41,7 +41,7 @@ const FeatureList = [
   },
   {
     title: 'Integrate with your favorite test automation libraries',
-    Svg: require('../../static/img/icon_5.svg').default,
+    Svg: require('./img/icon_5.svg').default,
     description: (
       <>
         Automate executable specifications with BDD tools like Cucumber, or write clean and maintainable test code with business-readable reporting in JUnit 4 or 5.
@@ -50,7 +50,7 @@ const FeatureList = [
   },
   {
     title: 'Apply Best Practices',
-    Svg: require('../../static/img/icon_6.svg').default,
+    Svg: require('./img/icon_6.svg').default,
     description: (
       <>
         Use conventional Page Objects, and reduce the amount of code needed by 50% compared to traditional page object implementations, or try out more modern test automation design patterns such as Action Classes or the Screenplay Pattern, and write scalable, easy to maintain code tailor-fitted to your domain.

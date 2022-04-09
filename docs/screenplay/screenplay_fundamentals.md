@@ -1,10 +1,10 @@
 ---
-id: user_guide_screenplay_intro
+id: screenplay_fundamentals
 sidebar_position: 1
 ---
 # Screenplay Fundamentals
 
-The Screenplay Pattern is a modern test automation design pattern intented to make it easier to write scalabble, maintainable test code. You can get a quick overview of a simple Screenplay test [here](../..//docs/tutorials/screenplay).
+The Screenplay Pattern is a modern test automation design pattern intented to make it easier to write scalabble, maintainable test code. You can get a quick overview of a simple Screenplay test [here](../../docs/tutorials/screenplay).
 
 In this section, we will look at how to write high quality test automation using the Screenplay pattern in more detail. We will intially focus on interacting with a web application using Selenium - in the following sections, we will see how to interact with APIs and databases using the Screenplay model.
 
@@ -371,7 +371,7 @@ Now suppose we want to allow Toby to start with some elements already in his lis
 However to implement this method, we need to loop over the provided list of items, and call the `AddATodoItem` task for each of them. We can do this by using a Lambda expression instead of a list of _Performable_s. The Lambda expression takes an actor as a parameter, and allows us to write arbitrary blocks of code to implement our task. For example, the `withAListContaingTheItems()` method might look like the following:
 
 ```java
-    public static Performable withAListContaingTheItems(String... items) {
+    public static Performable withAListContainingTheItems(String... items) {
         return Task.where("{0} starts with a list containing " + Arrays.asList(items),
                 actor -> {
                     actor.attemptsTo(Start.withAnEmptyTodoList());
@@ -392,7 +392,7 @@ public class Start {
         );
     }
 
-    public static Performable withAListContaingTheItems(String... items) {
+    public static Performable withAListContainingTheItems(String... items) {
         return Task.where("{0} starts with a list containing " + Arrays.asList(items),
                 actor -> {
                     actor.attemptsTo(Start.withAnEmptyTodoList());
@@ -408,7 +408,108 @@ public class Start {
 
 ### Writing custom Performable classes.
 
+Sometimes we need more control over the creation of a Task. We can do this by creating a class that implements the `Performable` interface. 
 
+The `Performable` interface has a single method that you need to implement: `performAs()`. This method takes an `Actor` as a parameter. A very simple custom task might look like this:
+
+```java
+public class AddItem implements Performable {
+    @Override
+    public <T extends Actor> void performAs(T actor) {
+        actor.attemptsTo(
+                Enter.theValue("Buy some milk")
+                        .into(".new-todo")
+                        .thenHit(Keys.RETURN)
+        );
+    }
+}
+```
+
+Now we can use this class directly in our tests:
+
+```java
+    AddItem addANewItem = new AddItem();
+    toby.attemptsTo(addANewItem);
+```
+
+By default, Serenity will record this action in the reports using the name of the actor and the name of the class, so in this case, the report would include something like "Toby add item". If we want a more descriptive text, we can add the `@Step` annotation to the `performAs()` method, as shown here (the "{0}" placeholder will be replaced by the name of the actor):
+
+```java
+public class AddItem implements Performable {
+    @Override
+    @Step("{0} adds an item to the list")
+    public <T extends Actor> void performAs(T actor) {
+        actor.attemptsTo(
+                Enter.theValue("Buy some milk")
+                        .into(".new-todo")
+                        .thenHit(Keys.RETURN)
+        );
+    }
+}
+```
+
+In this class, we can only add the item "Buy some milk" to our list. We could make our class more flexible by recordinh the name of the task as a parameter. To do this, we need to add a member variable to our `Performable` to represent this value, and pass it in to the constructor:
+
+```java
+public class AddItem implements Performable {
+    private String name;
+
+    public AddItem(String name) {
+        this.name = name;
+    }
+
+    @Override
+    @Step("{0} adds an item to the list")
+    public <T extends Actor> void performAs(T actor) {
+        actor.attemptsTo(
+                Enter.theValue(name)
+                        .into(".new-todo")
+                        .thenHit(Keys.RETURN)
+        );
+    }
+
+    public static AddItem called(String name) {
+        return new AddItem(name);
+    }
+}
+```
+
+We can now make our test code more readable, as shown here:
+```java
+    toby.attemptsTo(AddItem.named("Walk the dog"));
+```
+
+However there is one more thing we need to do to make this work correctly. The code shown here will not be correctly reported in the Serenity reports. For technical reasons, every `Performable` implementation must have a default constructor, even if you don't use it directly in your code. So the complete implementation will look like this:
+
+```java
+public class AddItem implements Performable {
+    private String name;
+
+    public AddItem() {}
+
+    public AddItem(String name) {
+        this.name = name;
+    }
+
+    @Override
+    @Step("{0} adds an item to the list")
+    public <T extends Actor> void performAs(T actor) {
+        actor.attemptsTo(
+                Enter.theValue(name)
+                        .into(".new-todo")
+                        .thenHit(Keys.RETURN)
+        );
+    }
+
+    public static AddItem called(String name) {
+        return new AddItem(name);
+    }
+}
+```
+
+:::tip
+Always remember to add a default constructor with no parameters to your `Performable` implementations, otherwise they will not appear correctly in the reports.
+:::
 
 ## Questions - querying the state of the system
 

@@ -5,19 +5,19 @@ import styles from './Sponsors.module.css';
 const SponsorList = [
   {
     title: 'LambdaTest',
-    logo: '../../static/img/sponsors/lambda-test.png',
+    logo: 'img/sponsors/lambda-test.png',
     link: 'https://www.lambdatest.com/',
     description: 'Perform Automated and Live Interactive Cross Browser Testing on 3000+ Real Browsers and Operating Systems Online.'
   },
   {
     title: 'BrowserStack',
-    logo: '../../static/img/sponsors/browserstack.png',
+    logo: 'img/sponsors/browserstack.png',
     link: 'https://www.browserstack.com/',
     description: 'Give your users a seamless experience by testing on 3000+ real devices and browsers. Don\'t compromise with emulators and simulators.'
   },
   {
     title: 'Serenity Dojo',
-    logo: '../../static/img/sponsors/serenity-dojo.png',
+    logo: 'img/sponsors/serenity-dojo.png',
     link: 'https://www.serenity-dojo.com/',
     description: 'Start Learning Real-World Test Automation Today with a proven programme that will set you apart from your peers.'
   },

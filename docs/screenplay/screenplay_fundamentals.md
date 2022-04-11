@@ -513,5 +513,11 @@ Always remember to add a default constructor with no parameters to your `Perform
 
 ## Questions - querying the state of the system
 
+Screenplay is an actor-centric pattern, and just as actors interact with the system by performing _tasks_ and _interactions_, they can query the state of the system by asking _questions_.
+
+An actor can ask a question by using the `askFor()
+
+The simplest way to ask a question about the state of the system is to use one of the bundled _Question_ classes.
+
 Now that we have seen how to set up a Screenplay test using different frameworks, how to organise interactions into tasks, and how to query the state of the system, we will look at how to use Screenplay to interact with a web application in more detail.
 

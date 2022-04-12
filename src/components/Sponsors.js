@@ -9,12 +9,12 @@ const SponsorList = [
     link: 'https://www.lambdatest.com/',
     description: 'Perform Automated and Live Interactive Cross Browser Testing on 3000+ Real Browsers and Operating Systems Online.'
   },
-  {
-    title: 'BrowserStack',
-    logo: 'img/sponsors/browserstack.png',
-    link: 'https://www.browserstack.com/',
-    description: 'Give your users a seamless experience by testing on 3000+ real devices and browsers. Don\'t compromise with emulators and simulators.'
-  },
+  // {
+  //   title: 'BrowserStack',
+  //   logo: 'img/sponsors/browserstack.png',
+  //   link: 'https://www.browserstack.com/',
+  //   description: 'Give your users a seamless experience by testing on 3000+ real devices and browsers. Don\'t compromise with emulators and simulators.'
+  // },
   {
     title: 'Serenity Dojo',
     logo: 'img/sponsors/serenity-dojo.png',

@@ -515,9 +515,52 @@ Always remember to add a default constructor with no parameters to your `Perform
 
 Screenplay is an actor-centric pattern, and just as actors interact with the system by performing _tasks_ and _interactions_, they can query the state of the system by asking _questions_.
 
-An actor can ask a question by using the `askFor()
+An actor can ask a question by using the `askFor()` method. You can see an example of how this works here:
 
-The simplest way to ask a question about the state of the system is to use one of the bundled _Question_ classes.
+```java
+   String pageTitle = toby.asksFor(Text.of(".title"));
+```
+
+`Text` is an example of a _Question Factory_. Question Factories provide a convenient way to query the state of the application, and there are many to choose from. For example, we could check whether a particular web element was visible using the `Visibility` class, like this:
+
+```java
+   boolean isVisible = toby.asksFor(Visibility.of(".title"));
+```
+
+Serenity BDD comes with lot bundled _Question Factories_ like these, and we will look at them in more detail in the next section. But you can also write your own custom questions, to query any aspect of your application that you like.
+
+One way to implement a _Question_ is to use a Java 8 Lambda expression that takes an _Actor_ as an argument. For example, the following method returns an _Integer Question_ (a _Question_ that returns an integer). 
+
+```java
+    Question<Integer> numberOfTodoItems() {
+        return actor -> BrowseTheWeb.as(actor).findAll(".todo-list li").size();
+    }
+```
+
+We could find the answer to this question using the `asksFor()` method, as in the previous example:
+```java
+   int numberOfTodos = toby.asksFor(numberOfTodoItems());
+```
+
+An alternative to the `asksFor()` method is the `Question`'s own `answeredBy()` method:
+
+```java
+   int numberOfTodos = numberOfTodoItems().answeredBy(toby);
+```
+
+This format can be more convenient for assertions, as illustrated in this example:
+
+```java
+   assertThat(numberOfTodoItems().answeredBy(toby)).isEqualTo(1);
+```
+
+We could make this method more readable by using the `Question.about` format - this will produce a more meaningful error message 
+
+    Question<Integer> numberOfTodoItems() {
+        return Question.about("the number of todo items")
+                   .answeredBy(
+                       actor -> BrowseTheWeb.as(actor).findAll(".todo-list li").size());
+    }
 
 Now that we have seen how to set up a Screenplay test using different frameworks, how to organise interactions into tasks, and how to query the state of the system, we will look at how to use Screenplay to interact with a web application in more detail.
 

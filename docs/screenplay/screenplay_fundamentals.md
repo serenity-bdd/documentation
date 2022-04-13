@@ -515,6 +515,7 @@ Always remember to add a default constructor with no parameters to your `Perform
 
 Screenplay is an actor-centric pattern, and just as actors interact with the system by performing _tasks_ and _interactions_, they can query the state of the system by asking _questions_.
 
+### Using bundled Question classes
 An actor can ask a question by using the `askFor()` method. You can see an example of how this works here:
 
 ```java
@@ -529,6 +530,7 @@ An actor can ask a question by using the `askFor()` method. You can see an examp
 
 Serenity BDD comes with lot bundled _Question Factories_ like these, and we will look at them in more detail in the next section. But you can also write your own custom questions, to query any aspect of your application that you like.
 
+### Creating custom Questions using Lambda expressions
 One way to implement a _Question_ is to use a Java 8 Lambda expression that takes an _Actor_ as an argument. For example, the following method returns an _Integer Question_ (a _Question_ that returns an integer). 
 
 ```java
@@ -554,13 +556,69 @@ This format can be more convenient for assertions, as illustrated in this exampl
    assertThat(numberOfTodoItems().answeredBy(toby)).isEqualTo(1);
 ```
 
-We could make this method more readable by using the `Question.about` format - this will produce a more meaningful error message 
+### Making questions more readable with the `Question.about()` method
+We could make this method more readable by using the `Question.about` format - this will produce a more meaningful error message. In the following example, we use the `BrowseTheWeb` class to access the Serenity WebDriver API and find the number of todo list items currently on the page:
 
+```java
     Question<Integer> numberOfTodoItems() {
         return Question.about("the number of todo items")
                    .answeredBy(
                        actor -> BrowseTheWeb.as(actor).findAll(".todo-list li").size());
     }
+```
 
+### Converting Questions
+
+Questions also provide a convenient way to convert responses into different types. This is particularly useful for the bundled WebDriver `Question` classes, that typically return values in text form. 
+
+For example, the TodoMVC application shows the number of items remaining to do at any time beneath the list:
+
+![](img/items-left.png)
+
+We can locate the item count using the CSS expression _".todo-count strong"_. We could fetch this value as a String using the `Text` class we saw previously:
+
+```java
+    String itemsLeftCount = toby.asksFor(Text.of(".todo-count strong");
+```
+
+However if we prefer to retrieve the value as an integer, we could use the `asInteger()` method like this:
+
+```java
+   int itemsLeftCount = toby.asksFor(Text.of(".todo-count strong").asInteger());
+```
+
+Some of the conversion methods available include the following:
+
+| Type         | Method      | Example     |
+| ------------ | ----------- | ----------- |
+| Integer      | asInteger() | Text.of(".todo-count strong").asInteger()    |
+| Long         | asLong()    | Text.of(".todo-count strong").asLong()       |
+| Float        | asFloat()   | Text.of(".currency-value").asFloat()         |
+| Double       | asDouble()  | Text.of(".currency-value").asDouble()        |
+| BigDecimal   | asBigDecimal() | Text.of(".currency-value").asBigDecimal() |
+
+
+### Converting date values
+Date values can also be converted to `LocalDate` objects. If the date uses the standard ISO date format (e.g. "2022-05-15"), it can be converted using the `asDate()` method, like this:
+
+```java
+   LocalDate dateValue = Text.of("#departure-date").asDate();
+```
+
+If the date uses a different format, the `asDate()` method takes a date-time pattern that can be used to parse the value, e.g.
+
+```java
+    LocalDate dateValue = Text.of("#departure-date").asDate("d MMM uuuu");
+```
+
+### Converting to lists of values
+
+We can also use the `asListOf()` method to find all the answers to a specific question, and convert each of them to a specified type. For example, to convert a list of matching String values to integers, we could use the following code:
+
+```java
+    List<Integer> itemQuantities = Text.of(".item-quantity").asListOf(Integer.class)
+```
+
+## Conclusion
 Now that we have seen how to set up a Screenplay test using different frameworks, how to organise interactions into tasks, and how to query the state of the system, we will look at how to use Screenplay to interact with a web application in more detail.
 

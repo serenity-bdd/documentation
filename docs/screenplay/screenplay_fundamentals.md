@@ -160,6 +160,41 @@ class AddNewTodosWithAManagedDriver {
 }
 ```
 
+### Defining actors using the CastMember annotation
+
+For many scenarios we can simplify this code shown above. If we just need to use an actor who can interact with a website using Selenium, we can use the `@CastMember` annotation. This annotation will configure an actor with a WebDriver instance, and manage the browser lifecycle for us (so no need for the `@Managed` annotation or `WebDriver` variable). You can see an example of this annotation in action here:
+
+```java
+@ExtendWith(SerenityJUnit5Extension.class)
+class AddNewTodosWithACastMember {
+
+    @CastMember
+    Actor toby;
+
+    @Test
+    @DisplayName("Add a todo item to an empty list")
+    void addToEmptyList() {
+
+        toby.attemptsTo(
+                Open.browserOn().the(TodoMvcPage.class),
+                Enter.theValue("Buy some milk").into(".new-todo").thenHit(Keys.RETURN)
+        );
+        Collection<String> items = toby.asksFor(Text.ofEach(".todo-list label"));
+        assertThat(items).containsExactly("Buy some milk");
+
+        String title = toby.asksFor(Text.of(By.tagName("h1")));
+        assertThat(title).isEqualTo("todos");
+    }
+}
+```
+
+The name of the actor will be derived from the name of the variable. If you need a more descriptive name, you can use the `name` attribute to provide a free text value, which will be used in the reports:
+
+```java
+    @CastMember(name = "Tim the Enchanter")
+    Actor tim;
+```
+
 ### Actors in Cucumber
 
 Setting up actors in Cucumber is a little more compicated than in JUnit, because we generally refer to them by name in the Cucumber scenarios. Suppose for example we want to automate the following scenario:

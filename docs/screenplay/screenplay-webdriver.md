@@ -153,6 +153,13 @@ You can find the standard Serenity interaction classes in the `net.serenitybdd.s
 | -----------                    | --------             | ----------- |
 | Clear                          | Clear an input field | `actor.attemptsTo(Clear.field("#firstname"))`           |
 | Click                          | Click on an element  | `actor.attemptsTo(Click.on("#add-to-cart"))`           |
+| DoubleClick | Double-click on an element using a Selenium Action | `actor.attemptsTo(DoubleClick.on("#add-to-cart"))`           |
+| Enter                          | Type a value into an input field  | `actor.attemptsTo(Enter.theValue("scott").into("#username"))`           |
+| Evaluate                          | Evaluate a Javascript expression  | `actor.attemptsTo(Evaluate.javascript("window.localStorage.clear();")`           |
+| Hit                          | Press a key  | `actor.attemptsTo(Hit.the(Keys.ENTER).into("#searchterms"))`           |
+| JavaScriptClick                          | Click on an element using Javascript rather than Selenium | `actor.attemptsTo(JavaScriptClick.on("#add-to-cart"))`           |
+| MoveMouse                          | Move the mouse over a specified element | `actor.attemptsTo(MoveMouse.to("#main-menu"))`           |
+
 
 The more important interactions are described in more detail in the following sections.
 
@@ -160,8 +167,14 @@ The more important interactions are described in more detail in the following se
 
 The `Click` interaction class allows you to perform a WebDriver click on an element. You can identify an element in a number of ways
 
+
+### JavaScript interactions
+
+### Moving the mouse
+(chainable elements)
 - Page Elements 
 
+### Selecting from dropdowns
 
 - Dynamic targets
 

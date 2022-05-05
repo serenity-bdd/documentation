@@ -152,6 +152,7 @@ You can find the standard Serenity interaction classes in the `net.serenitybdd.s
 | Interaction                    | Purpose              | Example     |
 | -----------                    | --------             | ----------- |
 | Clear                          | Clear an input field | `actor.attemptsTo(Clear.field("#firstname"))`           |
+| CheckCheckbox                  | Check a checkbox field | `actor.attemptsTo(CheckCheckbox.of("#subscribe-to-newsletter"))`           |
 | Click                          | Click on an element  | `actor.attemptsTo(Click.on("#add-to-cart"))`           |
 | DoubleClick | Double-click on an element using a Selenium Action | `actor.attemptsTo(DoubleClick.on("#add-to-cart"))`           |
 | Enter                          | Type a value into an input field  | `actor.attemptsTo(Enter.theValue("scott").into("#username"))`           |
@@ -159,7 +160,16 @@ You can find the standard Serenity interaction classes in the `net.serenitybdd.s
 | Hit                          | Press a key  | `actor.attemptsTo(Hit.the(Keys.ENTER).into("#searchterms"))`           |
 | JavaScriptClick                          | Click on an element using Javascript rather than Selenium | `actor.attemptsTo(JavaScriptClick.on("#add-to-cart"))`           |
 | MoveMouse                          | Move the mouse over a specified element | `actor.attemptsTo(MoveMouse.to("#main-menu"))`           |
-
+| Open | Open a specific URL or page | `actor.attemptsTo(Open.url("https://www.google.com"))`|
+| PerformOn | Perform one or more actions on several elements | See below |
+| RightClick | Right-click on a given element | `actor.attemptsTo(RightClick.on("#menu"))` |
+| Scroll | Scroll to an element using Javascript | `actor.attemptsTo(Scroll.to("#terms-and-conditions"))` |
+| SelectFromOptions | Select a value in an HTML dropdown | `actor.attemptsTo(SelectFromOptions.byVisibleText("Red").from("#color"))` |
+| SendKeys | Enter a value into a field using the Selenium sendKeys() method |`actor.attemptsTo(SendKeys.of("scott").into("#username"))`           | 
+| Switch   | Switch to another window or tab | `actor.attemptsTo(Switch.toNewWindow())`           |
+| UncheckCheckbox                  | Clear a checkbox field | `actor.attemptsTo(UncheckCheckbox.of("#subscribe-to-newsletter"))`           |
+| Upload    | Upload a file using an HTML upload field |  `actor.attemptsTo(Upload.theFile(pathToFile)).to("#uploaded-file"))`           |
+| WithDevTools | Perform an action with the Chrome DevTools | See below |
 
 The more important interactions are described in more detail in the following sections.
 
@@ -167,6 +177,11 @@ The more important interactions are described in more detail in the following se
 
 The `Click` interaction class allows you to perform a WebDriver click on an element. You can identify an element in a number of ways
 
+### Entering values into fields
+
+Enter vs SendKeys
+
+### Working with checkboxes
 
 ### JavaScript interactions
 
@@ -174,9 +189,17 @@ The `Click` interaction class allows you to perform a WebDriver click on an elem
 (chainable elements)
 - Page Elements 
 
+### Scrolling elements into view
+
 ### Selecting from dropdowns
 
-- Dynamic targets
+### Switching to another window
+
+### Performing a sequence of actions
+
+### Writing custom interactions
+
+### Working with DevTools
 
 ### Waiting for things to happen
 

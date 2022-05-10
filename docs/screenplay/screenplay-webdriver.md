@@ -156,10 +156,10 @@ You can find the standard Serenity interaction classes in the `net.serenitybdd.s
 | Click                          | Click on an element  | `actor.attemptsTo(Click.on("#add-to-cart"))`           |
 | DoubleClick | Double-click on an element using a Selenium Action | `actor.attemptsTo(DoubleClick.on("#add-to-cart"))`           |
 | Enter                          | Type a value into an input field  | `actor.attemptsTo(Enter.theValue("scott").into("#username"))`           |
-| Evaluate                          | Evaluate a Javascript expression  | `actor.attemptsTo(Evaluate.javascript("window.localStorage.clear();")`           |
-| Hit                          | Press a key  | `actor.attemptsTo(Hit.the(Keys.ENTER).into("#searchterms"))`           |
-| JavaScriptClick                          | Click on an element using Javascript rather than Selenium | `actor.attemptsTo(JavaScriptClick.on("#add-to-cart"))`           |
-| MoveMouse                          | Move the mouse over a specified element | `actor.attemptsTo(MoveMouse.to("#main-menu"))`           |
+| Evaluate                       | Evaluate a Javascript expression  | `actor.attemptsTo(Evaluate.javascript("window.localStorage.clear();")`           |
+| Hit                            | Press a key  | `actor.attemptsTo(Hit.the(Keys.ENTER).into("#searchterms"))`           |
+| JavaScriptClick                | Click on an element using Javascript rather than Selenium | `actor.attemptsTo(JavaScriptClick.on("#add-to-cart"))`           |
+| MoveMouse                      | Move the mouse over a specified element | `actor.attemptsTo(MoveMouse.to("#main-menu"))`           |
 | Open | Open a specific URL or page | `actor.attemptsTo(Open.url("https://www.google.com"))`|
 | PerformOn | Perform one or more actions on several elements | See below |
 | RightClick | Right-click on a given element | `actor.attemptsTo(RightClick.on("#menu"))` |
@@ -167,19 +167,54 @@ You can find the standard Serenity interaction classes in the `net.serenitybdd.s
 | SelectFromOptions | Select a value in an HTML dropdown | `actor.attemptsTo(SelectFromOptions.byVisibleText("Red").from("#color"))` |
 | SendKeys | Enter a value into a field using the Selenium sendKeys() method |`actor.attemptsTo(SendKeys.of("scott").into("#username"))`           | 
 | Switch   | Switch to another window or tab | `actor.attemptsTo(Switch.toNewWindow())`           |
-| UncheckCheckbox                  | Clear a checkbox field | `actor.attemptsTo(UncheckCheckbox.of("#subscribe-to-newsletter"))`           |
+| UncheckCheckbox                | Clear a checkbox field | `actor.attemptsTo(UncheckCheckbox.of("#subscribe-to-newsletter"))`           |
 | Upload    | Upload a file using an HTML upload field |  `actor.attemptsTo(Upload.theFile(pathToFile)).to("#uploaded-file"))`           |
 | WithDevTools | Perform an action with the Chrome DevTools | See below |
 
 The more important interactions are described in more detail in the following sections.
 
-### Clicking on an element
+### Clear
 
-The `Click` interaction class allows you to perform a WebDriver click on an element. You can identify an element in a number of ways
+The `Clear` interaction resets the value of an HTML form element.
 
-### Entering values into fields
+```java
+        dina.attemptsTo(Clear.field(By.id("first-name")));
+```
 
-Enter vs SendKeys
+### Click
+
+Click on a button or element.
+
+```java
+        dina.attemptsTo(Click.on("#some-button"));
+```
+
+## DoubleClick
+
+Double-click on a button or element, using Selenium Actions.
+
+```java
+        dina.attemptsTo(DoubleClick.on("#some-button"));
+```
+
+### Enter and SendKeys
+
+There are two ways to enter a value into a field. 
+
+`Enter` will enter a value into a field, first waiting until the field is enabled, and then clearing the field of any current values, before entering the specified value.
+
+```java
+        dina.attemptsTo(Enter.theValue("Sarah-Jane").into("#firstName"));
+```
+
+`SendKeys` will perform the equivalent of Selenium `sendKeys()`, you can use `Enter.keyValue()` instead of `Enter.theValue()`
+
+```java
+        dina.attemptsTo(SendKeys.of("Sarah-Jane").into("#firstName"));
+```
+
+### Evaluate
+
 
 ### Working with checkboxes
 

@@ -80,7 +80,7 @@ Next, you need to use the `SerenityJUnit5Extension` class, like this:
 import net.serenitybdd.junit.runners.SerenityJUnit5Extension;
 import org.junit.jupiter.api.Test;
 
-@RunWith(SerenityRunner.class)
+@ExtendWith(SerenityJUnit5Extension.class)
 class AddNewTodos {
 
     @Test
@@ -624,26 +624,29 @@ However if we prefer to retrieve the value as an integer, we could use the `asIn
 
 Some of the conversion methods available include the following:
 
-| Type         | Method      | Example     |
-| ------------ | ----------- | ----------- |
-| Integer      | asInteger() | Text.of(".todo-count strong").asInteger()    |
-| Long         | asLong()    | Text.of(".todo-count strong").asLong()       |
-| Float        | asFloat()   | Text.of(".currency-value").asFloat()         |
-| Double       | asDouble()  | Text.of(".currency-value").asDouble()        |
+| Type         | Method         | Example     |
+| ------------ | -----------    | ----------- |
+| Integer      | asInteger()    | Text.of(".todo-count strong").asInteger()    |
+| Long         | asLong()       | Text.of(".todo-count strong").asLong()       |
+| Float        | asFloat()      | Text.of(".currency-value").asFloat()         |
+| Double       | asDouble()     | Text.of(".currency-value").asDouble()        |
 | BigDecimal   | asBigDecimal() | Text.of(".currency-value").asBigDecimal() |
-
 
 ### Converting date values
 Date values can also be converted to `LocalDate` objects. If the date uses the standard ISO date format (e.g. "2022-05-15"), it can be converted using the `asDate()` method, like this:
 
 ```java
-   LocalDate dateValue = Text.of("#departure-date").asDate();
+   LocalDate dateValue = toby.asksFor(
+       Text.of("#departure-date").asDate()
+    );
 ```
 
 If the date uses a different format, the `asDate()` method takes a date-time pattern that can be used to parse the value, e.g.
 
 ```java
-    LocalDate dateValue = Text.of("#departure-date").asDate("d MMM uuuu");
+    LocalDate dateValue = toby.asksFor(
+        Text.of("#departure-date").asDate("d MMM uuuu")
+    );
 ```
 
 ### Converting to lists of values
@@ -651,7 +654,31 @@ If the date uses a different format, the `asDate()` method takes a date-time pat
 We can also use the `asListOf()` method to find all the answers to a specific question, and convert each of them to a specified type. For example, to convert a list of matching String values to integers, we could use the following code:
 
 ```java
-    List<Integer> itemQuantities = Text.of(".item-quantity").asListOf(Integer.class)
+    List<Integer> itemQuantities = toby.asksFor(
+        Text.of(".item-quantity").asListOf(Integer.class)
+    );
+```
+
+### Working with collections
+
+Another way to retrieve a list of values is to use the `ofEach()` method. 
+
+```java
+    Collection<String> itemQuantities = toby.asksFor(Text.of(".item-quantity"));
+```
+
+As with the `Text.of()` method, we can use the `asListOf()` method to convert this collection into another type
+
+```java
+    List<String> itemQuantities = toby.asksFor(
+        Text.of(".item-quantity").asListOf(Integer.class)
+    );
+```
+
+If we need to perform a more complex operation, we can use the `mapEach()` method to apply an arbitrary Lambda expression to each matching element:
+
+```java
+   Collection<Integer> nameLengths = toby.asksFor(Text.ofEach(".name").mapEach(s -> s.length()));
 ```
 
 ## Conclusion

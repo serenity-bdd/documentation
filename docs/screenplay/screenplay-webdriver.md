@@ -720,7 +720,7 @@ Determine whether this web element present and visible on the screen
 
 ### Working with Dropdowns
 
-We can query the current selected value or values of an HTML <SELECT> element using the `SelectedValue`, `SelectedValues`, `SelectedVisibleTextValue` and `SelectedVisibleTextValue` Question classes.
+We can query the current selected value or values of an HTML `<SELECT>` element using the `SelectedValue`, `SelectedValues`, `SelectedVisibleTextValue` and `SelectedVisibleTextValue` Question classes.
 
 For example, to find the current selected value of an HTML dropdown list, we could use the following code:
 
@@ -753,5 +753,6 @@ List<String> selectedColors = dina.asksFor(SelectOptionValues.of("#color-dropdow
 ```
 
 ## Handling Waits
+
 
 ## Writing Custom Interactions

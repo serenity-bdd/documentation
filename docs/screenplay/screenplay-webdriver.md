@@ -604,7 +604,7 @@ The full list of Web Question classes is provided here.
 
 ### Absence
 
-Determine whether an element is _not_ present on the page.
+Determine whether an element is _not_ present or visible on the page. A field that is present in the dom but is not rendered will be considered absent.
 
 ```java
 boolean isNotPresent = sam.asksFor(Absence.of("#no-such-field"));
@@ -612,7 +612,7 @@ boolean isNotPresent = sam.asksFor(Absence.of("#no-such-field"));
 
 ### Attribute
 
-                                     
+Check the value of an HTML attribute of a specified element.
 
 ```java
 String placeholderText = sam.asksFor(Attribute.of(".new-todo").named("placeholder"));
@@ -634,9 +634,123 @@ Retrieve the value of a specific CSS attribute of an element.
 String font = sam.asksFor(CSSValue.of(target).named("font"));
 ```
 
+### CurrentlyEnabled
+
+Check whether an element is currently enabled, without waiting.
+
+```java
+boolean isCurrentlyEnabled = sam.asksFor(CurrentlyEnabled.of("#some-button"));
+```
+
+### CurrentVisibility
+
+Check whether an element is currently visible, without waiting.
+
+```java
+boolean isCurrentlyVisible = sam.asksFor(CurrentVisibility.of("#some-button"));
+```
+
+### Disabled
+
+Check whether an element is disabled.
+
+```java
+boolean isDisabled = sam.asksFor(Disabled.of("#a-disabled-button"));
+```
+
+### Displayed
+
+Check whether an element is displayed. If the element is not currently displayed, the test will wait for a short delay to give it time to be displayed.
+
+```java
+boolean isDisplayed = sam.asksFor(Displayed.of("#some-button"));
+```
+
+### Enabled
+
+Check whether an element is enabled. If the element is not currently enabled, the test will wait for a short delay to give it time to be enabled.
+
+```java
+boolean isEnabled = sam.asksFor(Enabled.of("#some-button"));
+```
+
+### Presence
+
+Check whether an element is present in the DOM. An invisible or hidden element can still be present in the DOM.
+
 ### SelectedStatus
 
 Alternative to `CheckboxValue`
+
+```java
+boolean termsAndConditionsApproved = sam.asksFor(SelectedStatus.of("#tnc"));
+```
+
+# Text
+
+To fetch the text value of an element, we can use the `Text` class:
+
+```java
+String introductionText = sam.asksFor(Text.of("#introduction"));
+```
+
+### TextContent
+
+In some cases, we may need to read the `textContent` HTML property to get the text we need. To do this, we can use the `TextContent` class rather than `Text`. This returns the text content of the specified element, and all its descendants.
+
+### TheCoordinates
+
+Return the coordinates of a specified element.
+
+### TheLocation
+
+Return where on the page is the top left-hand corner of the rendered element.
+
+### TheSize
+
+What is the width and height of the rendered element?
+
+### Value
+
+Return the HTML `value` attribute of a specified element.
+
+### Visibility
+
+Determine whether this web element present and visible on the screen
+
+### Working with Dropdowns
+
+We can query the current selected value or values of an HTML <SELECT> element using the `SelectedValue`, `SelectedValues`, `SelectedVisibleTextValue` and `SelectedVisibleTextValue` Question classes.
+
+For example, to find the current selected value of an HTML dropdown list, we could use the following code:
+
+```java
+String selectedColorValue = dina.asksFor(SelectedValue.of("#color-dropdown"));
+```
+
+To get the visible text of the selected item, we would use `SelectedVisibleTextValue`:
+
+```java
+String selectedColor = dina.asksFor(SelectedVisibleTextValue.of("#color-dropdown"));
+```
+
+For multi-selects, we can use `SelectedValues` and `SelectedVisibleTextValues`:
+
+```java
+List<String> selectedColors = dina.asksFor(SelectedValues.of("#color-dropdown"));
+```
+
+We can retrieve the current list of options using `SelectOptions`, which returns the list of visible texts for each option:
+
+```java
+List<String> selectedColors = dina.asksFor(SelectOptions.of("#color-dropdown"));
+```
+
+If we need the `value` attribute of each dropdown option, we can use `SelectOptionValues`, e.g.:
+
+```java
+List<String> selectedColors = dina.asksFor(SelectOptionValues.of("#color-dropdown"));
+```
 
 ## Handling Waits
 

@@ -754,5 +754,70 @@ List<String> selectedColors = dina.asksFor(SelectOptionValues.of("#color-dropdow
 
 ## Handling Waits
 
+### Using the WaitUntil class
+If you need to wait for an element to appear with Serenity Screenplay, there are a few options available. By default, Serenity will wait for a short delay if you try to interact with an element that is not on the page. However, you can ensure that this wait is sufficient by using the `WaitUntil` class, as shown here: 
 
-## Writing Custom Interactions
+```java
+private final static Target DELAYED_BUTTON = PageElement.locatedBy("#delayed-button");
+
+dina.attemptsTo(
+    WaitUntil.the(DELAYED_BUTTON, WebElementStateMatchers.isVisible()),
+    Click.on(DELAYED_BUTTON)
+);
+```
+
+This code will wait until the element is visible before proceeding to the Click action. The timeout can be configured (in milliseconds) using the `webdriver.timeouts.implicitlywait` property, which is 5 seconds by default.
+
+If you need to have a finer control over the timeout duration for specific situations, you can specify this by adding the `forNoMoreThan()` method, which lets you specify an explicit timeout:
+
+```java
+dina.attemptsTo(
+    WaitUntil.the(DELAYED_BUTTON, isVisible()).forNoMoreThan(10).seconds()
+);
+ ```
+
+You can also wait for other conditions. For example, to wait until an element dissapears, you can use the `isNotVisible()` matcher:
+
+```java
+dina.attemptsTo(
+    WaitUntil.the(DISAPPEARING_BUTTON, isNotVisible())
+);
+```
+
+The following matchers are available in the `WebElementStateMatchers` class. Note that all of the following methods also have a negative equivalent (`isNotVisible()`, `isNotEmpty()` etc.).
+
+| Matcher                    | Purpose                              |
+| -----------                | --------                             |
+| containsText(...)          | Check that an element contains a specific text value |
+| containsOnlyText(...)      | Check that an element contains exactly a specific text value |
+| containsSelectOption(...)  | Check that a dropdown element contains a specific text value as an option|
+| isClickable                | Check that an element is visible and enabled |
+| isEmpty                    | Check that an element is not visible or contains an empty string |
+| isEnabled                  | Check that an element is enabled |
+| isPresent                  | Check that an element is present on the page |
+| isSelected                 | Check that an element is selected     | 
+| isVisible                  | Check that an element is visible     | 
+
+### Waiting for a WebDriver condition
+
+Another option is to wait for a WebDriver condition (which can be found in the `org.openqa.selenium.support.ui.ExpectedConditions` class), e.g.
+
+```java
+dina.attemptsTo(
+        WaitUntil.the(
+                invisibilityOfElementLocated(By.id("disappearing-button")))
+);
+```
+
+### Waiting for Targets
+
+You can also place a specific wait condition on a `Target` object. You can do this either when you define the `Target` variable (if it should be applied any time you interact with this element), or only when you interact with the element, as shown below:
+
+```java
+private final static Target INVISIBLE_BUTTON 
+    = PageElement.locatedBy("#invisible-button");
+
+dina.attemptsTo(
+    Click.on(INVISIBLE_BUTTON.waitingForNoMoreThan(Duration.ofSeconds(3)))
+);
+```

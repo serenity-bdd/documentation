@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkserenity_users_guide=self.webpackChunkserenity_users_guide||[]).push([[233],{2262:function(e){e.exports=JSON.parse('{"permalink":"/documentation/blog/tags/selenium-4","page":1,"postsPerPage":10,"totalPages":1,"totalCount":1,"blogDescription":"Blog","blogTitle":"Blog"}')}}]);

@@ -1,0 +1,1 @@
+"use strict";(self.webpackChunkserenity_users_guide=self.webpackChunkserenity_users_guide||[]).push([[15],{801:function(e){e.exports=JSON.parse('{"label":"selenium-4","permalink":"/documentation/blog/tags/selenium-4","allTagsPath":"/documentation/blog/tags","count":1}')}}]);

@@ -1,5 +1,5 @@
 ---
-id: user_guide_screenplay_webtesting
+id: screenplay_webdriver
 sidebar_position: 2
 ---
 # Web Testing with Serenity Screenplay
@@ -751,6 +751,8 @@ If we need the `value` attribute of each dropdown option, we can use `SelectOpti
 ```java
 List<String> selectedColors = dina.asksFor(SelectOptionValues.of("#color-dropdown"));
 ```
+
+
 
 ## Handling Waits
 

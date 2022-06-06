@@ -403,6 +403,36 @@ If you need to wait for one of several possible elements to appear, you can also
 waitForAnyRenderedElementOf(By.id("color"), By.id("taste"), By.id("sound"));
 ```
 
+### Working with Shadow DOM elements
+
+Selenium 4 introduced support for Shadow DOM elements, and Serenity BDD adds enhanced support for these elements. Suppose we have the following HTML structure containing shadow DOM elements.
+
+```html
+<pre>
+    <div id="shadow-host">
+      #shadow-root
+      <input id="shadowedInput"/>
+ 
+      <div id="nested-shadow-host">
+          #shadow-root
+          <input id="nestedShadowedInput"/>
+      </div>
+    </div>
+```
+ 
+To find the first input element inside a single-level shadow DOM, you need to provide the locator for the nested elementand the locator for the shadow host element:
+
+```java
+ ("#shadowedInput","#shadow-host")
+```
+
+ To find the input element inside the nested shadow DOM, you need to provide the locator for the shadowed element, as well as the list of parent shadow dom locators, rom top to bottom:
+ 
+ ```java
+ ByShadow.cssSelector("#shadowedInput","#shadow-host", "#inner-shadow-host")
+ ```
+
+
 ## Working with timeouts
 
 Modern AJAX-based web applications add a great deal of complexity to web testing. The basic problem is, when you access a web element on a page, it may not be available yet. So you need to wait a bit. Indeed, many tests contain hard-coded pauses scattered through the code to cater for this sort of thing.

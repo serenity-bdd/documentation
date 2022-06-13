@@ -262,7 +262,7 @@ Using this approach, we could implement the first step of our scenario in a way 
     }
 ```
 
-We could even define a custom Cucumber expression so that we don't have to call the `OnStage.theActorCalled()` method each time:
+It is often useful to define a custom Cucumber expression so that we don't have to call the `OnStage.theActorCalled()` method each time:
 ```java
     @ParameterType(".*")
     public Actor actor(String actorName) {
@@ -286,6 +286,75 @@ This way, our next step can simply use a parameter of type `Actor`, like this:
         );
     }
 ```
+
+These methods are defined out-of-the-box with the Serenity Cucumber Starter template on Github, so you don't need to add them yourself if you are using this template.
+
+The `OnStage` class also recognises pronouns - when an expression such as "he adds 'Walk the dog' to the todo list" or "her shopping cart should be empty", the `theActorCalled()` method will recognise the pronoun and fetch the last active actor with the `theActorInTheSpotlight()` method. By default, the pronouns are:
+    - he
+    - she
+    - they
+    - it
+    - his
+    - her
+    - their
+    - its
+You can define your own list of pronouns using the `screenplay.pronouns` Serenity property in the `serenity.conf` file, e.g.
+
+```conf
+screenplay.pronouns=il,elle,ils,elles,son,sa,leur,leurs
+```
+
+#### Casts and Abilities
+
+In the previous code, we used the `OnlineCast` class to define the cast of actors:
+
+```java
+OnStage.setTheStage(new OnlineCast());
+```
+
+Casts are very flexible, and we can set them up to produce actors with additional abilities if we need to.
+
+For example, imagine we wanted to give our actors the ability to deliver some coffee. To do this, we can create a `Deliver` ability class. To deliver a coffee, we will call the `deliverItem()` method, which will (for our purposes) simply return a string with an item with a unique number (such as "Coffee #1").
+
+The Ability class could look like this:
+
+```java
+    public class Deliver implements Ability {
+        final String item;
+        private int counter = 1;
+
+        private Deliver(String item) {
+            this.item = item;
+        }
+
+        public static some(String item) {
+            return new Deliver(item)
+        }
+
+        public String deliverItem() {
+            return item + " #" + counter++;
+        }
+    }
+```
+
+Now we can assign this ability to our actors in the `Cast` by using the `Cast.whereEveryoneCan()` method:
+
+```java
+OnStage.setTheStage(
+    Cast.whereEveryoneCan(Fetch.some("Coffee"))
+);
+```
+
+If we needed a more complex setup, we can also use a Lambda expression to provide the code we need to execute to enhance a new actor with additional abilities, like this: 
+
+```java
+Consumer<Actor> fetchTheCoffee = { actor -> actor.whoCan(Fetch.some("Coffee")) }
+
+OnStage.setTheStage(
+    Cast.whereEveryoneCan(fetchTheCoffee)
+);
+```
+
 
 #### The Actor in the spotlight
 
@@ -679,6 +748,46 @@ If we need to perform a more complex operation, we can use the `mapEach()` metho
 
 ```java
    Collection<Integer> nameLengths = toby.asksFor(Text.ofEach(".name").mapEach(s -> s.length()));
+```
+
+## Actor-specific session data
+
+Sometimes we need to store information in a step or task and reuse it in a subsequent one. Each Screenplay actor can remember information, and retrieve it later on in the test. We do this using the `remember()` method:
+
+```java
+    int actualCost = 100
+    actor.remember("Total Cost", total);
+```
+
+Later on, we can retrieve this information using the `recall()` method:
+```java
+    int recalledCost = dana.recall("Total Cost");
+    assertThat(recalledCost).isEqualTo(100);
+```
+
+An actor can remember information of any type, even the answer to a question. For example,the `Text.of()` method returns a Question object of type `Question<String>`. An actor can remember the answer to this question by using it as a parameter to the `remember()` method:
+
+```java
+    actor.remember("Total Cost", Text.of("#total-cost").asInteger());
+```
+
+We can then recall this value in the same way as any other:
+
+```java
+    int totalCost = actor.recall("Total Cost");
+    assertThat(totalCost).isEqualTo(100);
+```
+
+We can even recall a map containing every value currently remembered by the actor. We do this using the `recallAll()` method:
+
+```java
+    Map<String, Object> all = actor.recallAll();
+```
+
+We can also remove a remembered value using the `forget()` method:
+
+```java
+    actor.forget("Total Cost");
 ```
 
 ## Conclusion

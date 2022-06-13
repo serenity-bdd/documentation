@@ -293,13 +293,16 @@ public void retrieve_an_element_from_the_json_structure() {
 Oftentimes we need to retrieve not a single item, but a list of items.
 Retrieving a list is little different to retrieving a single item:
 
-[source,java,indent=0]
-.WhenManagingUsers.java
-----
-include::../examples/serenity-screenplay-rest/src/test/java/examples/screenplay/rest/WhenManagingUsers.java[tags=fetch_every_user]
-----
-<1> Retrieve all the users
-<2> Check the list of user first names
+```java
+sam.attemptsTo(
+        Get.resource("/users") 
+);
+
+sam.should(
+        seeThatResponse("all the expected users should be returned",
+                response -> response.body("data.first_name", hasItems("George", "Janet", "Emma"))) 
+);
+```
 
 The difference happens when we query the results.
 In this case, we use a jsonPath expression (`data.first_name`) that will return _all_ of the first_name field values.
@@ -308,12 +311,10 @@ The Hamcrest matcher `hasItems` will compare the collection of first names that 
 But what if we want to capture the data we retrieve, rather than simply make an assertion about the contents?
 We can do that using the `SerenityRest.lastResponse()` method, like this:
 
-[source,java,indent=0]
-.WhenManagingUsers.java
-----
-include::../examples/serenity-screenplay-rest/src/test/java/examples/screenplay/rest/WhenManagingUsers.java[tags=fetch_every_user_data]
-----
-<1> Use a JsonPath expression to retrieve all the `last_name` values underneath the `data` entry.
+```java
+List<String> userSurnames = SerenityRest.lastResponse().path("data.last_name"); 
+assertThat(userSurnames).contains("Bluth", "Weaver", "Wong");
+```
 
 We can also retrieve lists of objects, just as we retrieved a single `User` instance in the previous section.
 Simply use the `jsonPath.getList()` method as shown below:

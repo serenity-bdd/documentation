@@ -13,6 +13,7 @@ const config = {
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',
+  trailingSlash: false,
   organizationName: 'serenity-bdd', // Usually your GitHub org/user name.
   projectName: 'documentation', // Usually your repo name.
 

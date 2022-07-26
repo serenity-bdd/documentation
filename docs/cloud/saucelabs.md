@@ -68,9 +68,6 @@ You can specify the operating system and browser you want to run your tests on b
         browserName = "chrome"
         version = "104.0"
         platform = "Windows 10"
-        #
-        # Any LambdaTest-specific options go in the 'LT:Options' section
-        #
         "sauce:options" {
           tags = ["smoketest","billing"]
           recordVideo = true

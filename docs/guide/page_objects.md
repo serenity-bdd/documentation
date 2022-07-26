@@ -1072,3 +1072,18 @@ public class MyPhantomJSDriver implements DriverSource {
 ```
 
 Note that if you use custom drivers you will be entirely responsible for configuring and instantiating the browser instance, and the driver-related Serenity configuration options will not apply. We generally recommend using custom drivers only for very exceptional circumstances, and using `BeforeAWebdriverScenario` classes for most custom configuration requirements.
+
+## Using the HasAuthentication interface
+
+Selenium 4 supports the `HasAuthentication` interface, which indicates that a driver supports authenticating to a website in some way. Serenity drivers integrate seemlessly with the `HasAuthentication` interface, so you can use it in the same way as you would in Selenium 4. For example, to register a username and password to use on all pages, you could add the following code before opening a site:
+
+```java
+    getDriver().register(UsernameAndPassword.of("scott", "tiger")
+```
+
+If authentication is only required on certain pages, you can also use a predicate:
+
+```java
+        Predicate<URI> onlyAuthenticateOnTheLoginPage = uri -> uri.getPath().endsWith("/login");
+        getDriver().register(onlyAuthenticateOnTheLoginPage, UsernameAndPassword.of("scott", "tiger"));
+```

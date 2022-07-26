@@ -1,6 +1,6 @@
 ---
 id: selenium-grid
-title: Running Serenity Tests with Selenium Grid
+title: Selenium Grid
 sidebar_position: 1
 ---
 # Introduction
@@ -9,6 +9,9 @@ sidebar_position: 1
 
 Selenium Grid 4 takes advantage of a number of new technologies in order to facilitate scaling up while allowing local execution.
 
+You can also use Serenity to run your WebDriver tests on a remote machine, such as a Selenium Grid or a remote service such as provided by [BrowserStack](https://www.browserstack.com) or [LambdaTest](https://www.lambdatest.com/). This allows you to run your web tests against a variety of different browsers and operating systems, and also benefit from faster test execution when running the tests in parallel. We will look at how to do this in detail later on in the chapter.
+
+## Running Selenium Grid locally
 The simplest way to start with Selenium Grid is to run a standalone instance on your local machine. This allows you to make sure your Serenity configuration has been correctly set up to use the Selenim grid. 
 
 To try this own, download the latest `selenium-server` jar file from [the Selenium website](https://www.selenium.dev/downloads/). Then start up the server with the following command:
@@ -34,7 +37,21 @@ webdriver {
  }
 ```
 
-However, running the Selenium Grid locally is really only suitable for experimenting, as the tests will depend on you having the drivers on the system path of your local machine, which you do not need to do when using standard Serenity. A better approach is to use a Docker instance to run your Selenium Hub (see https://github.com/SeleniumHQ/docker-selenium). If you have Docker installed on your machine, this is easy to do.
+You can also provide additional properties about the target brower or environment, including:
+- `webdriver.remote.browser.version`: What version of the remote browser to use
+- `webdriver.remote.os`: What operating system the tests should be run on.
+
+For example, if you were running a Selenium Hub locally on port 4444 (the default) on a Windows machine, you could run the following command:
+
+```
+mvn verify -Dwebdriver.remote.url=http://localhost:4444/wd/hub -Dwebdriver.remote.driver=chrome -Dwebdriver.remote.os=WINDOWS
+```
+
+You can also pass the usual driver-specific capabilities to the remote browser, e.g.
+```
+mvn verify -Dwebdriver.remote.url=http://localhost:4444/wd/hub -Dwebdriver.remote.driver=chrome -Dwebdriver.remote.os=WINDOWS -Dchrome.switches="--no-sandbox,--ignore-certificate-errors,--homepage=about:blank,--no-first-run"
+```
+
 
 
 

@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkserenity_users_guide=self.webpackChunkserenity_users_guide||[]).push([[170],{6737:function(e){e.exports=JSON.parse('{"label":"locatorless-elements","permalink":"/documentation/blog/tags/locatorless-elements","allTagsPath":"/documentation/blog/tags","count":1}')}}]);

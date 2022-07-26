@@ -1,1 +1,0 @@
-"use strict";(self.webpackChunkserenity_users_guide=self.webpackChunkserenity_users_guide||[]).push([[535],{5641:function(e){e.exports=JSON.parse('{"title":"Recent posts","items":[{"title":"What\'s New In Serenity 3.1.0","permalink":"/documentation/blog/whats-new-in-serenity-3.1.0"}]}')}}]);

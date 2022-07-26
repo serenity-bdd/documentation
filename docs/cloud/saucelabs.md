@@ -37,7 +37,7 @@ sauce.username=myuser
 sauce.key=XXXXXXXX
 ```
 
-## Configuring the LambdaTest driver
+## Configuring the SauceLabs driver
 
 Serenity interacts with SauceLabs via the `RemoteDriver` driver. You will need to specify the remote URL for the geographical region you want to use in the `webdriver.remote.url` property, like this:
 ```hocon
@@ -47,7 +47,7 @@ webdriver {
 }
 ```
 
-## Activating the LambdaTest plugin
+## Activating the SauceLabs plugin
 
 The Serenity SauceLabs plugin will be invoked if Serenity can find a `"sauce:options"` section in your `serenity.conf` file, or if you specify a `remote.webdriver.url` that points to a SauceLabs server. If you have no Saucelabs-specific capabilities, simply set the `sauce.active` property to true like this:
 
@@ -71,34 +71,12 @@ You can specify the operating system and browser you want to run your tests on b
         #
         # Any LambdaTest-specific options go in the 'LT:Options' section
         #
-        "LT:Options" {
-          resolution", "1280x800"
-          network = true // To enable network logs
-          visual = true // To enable step by step screenshot
-          video = true // To enable video recording
-          console = true // To capture console logs
+        "sauce:options" {
+          tags = ["smoketest","billing"]
+          recordVideo = true
+          recordLogs = false
         }
       }
     }
 ```
-
-Note that the `w3c` option will be set to `true` by default, as this is the default protocol for the Selenium version integrated with Serenity.
-
-The LambdaTest test name will be assigned automatically. You can also set the _build_ name by assigning the `lambdatest.build` property.
-For example the following example shows how to create a build name from the Jenkins job name and build number environment variables:
-
-```hocon
-lambdatest {
-  build = "${JOB_NAME} - build ${BUILD_NUMBER}"
-}
-```
-
-These properties will be placed in the `LT:Options` capability.
-
-:::tip
-
-LambdaTest provides a convenient [Capabilities Generator](https://www.lambdatest.com/capabilities-generator/) that gives an idea of what options are available.
-
-:::
-
 

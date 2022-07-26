@@ -3,6 +3,7 @@ id: appium
 title: Running Serenity Tests on Appium
 sidebar_position: 4
 ---
+
 # Running tests on Appium
 Serenity supports running tests on mobile devices/emulators out of the box with [Appium](http://appium.io).
 
@@ -18,7 +19,8 @@ appium
 ```
 
 Then adapt `serenity.properties` to run on an Android device:
-````conf
+
+```
 webdriver.driver= appium
 webdriver.base.url = http://www.google.com/
 appium.hub = http://127.0.0.1:4723/wd/hub
@@ -30,7 +32,7 @@ appium.browserName = Chrome
 
 Here's an example for iOS:
 
-````conf
+```
 webdriver.driver= appium
 webdriver.base.url = http://www.google.com/
 appium.hub = http://127.0.0.1:4723/wd/hub

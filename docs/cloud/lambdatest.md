@@ -5,11 +5,13 @@ sidebar_position: 2
 ---
 # Serenity BDD LambdaTest Integration
 
-The `serenity-lambdatest` plugin provides seamless integration with the [Lambdatest](https://www.lambdatest.com/) online test automation platform. 
+LambdaTest is a cloud platform for test execution and test orchestration. With LambdaTest, Serenity users can extend their automation test coverage of their web and mobile apps on 3000+ real devices, browsers, and operating systems.
+
+The `serenity-lambdatest` plugin provides seamless integration with the [LambdaTest](https://www.lambdatest.com/) online test automation platform. 
 
 ## Adding the Lambdatest plugin
 
-To add the integrated support for LambdaTest to your project, you will need to add the `serenity-lambdatest` dependency to your project dependencies. For Mavenm, you would add the following:
+To add the integrated support for LambdaTest to your project, you will need to add the `serenity-lambdatest` dependency to your project dependencies. For Maven, you would add the following:
 ```xml
     <dependency>
         <groupId>net.serenity-bdd</groupId>
@@ -24,11 +26,11 @@ And for Gradle:
 ```
 
 ## Specifying your LambdaTest credentials and grid URL
-Next, you will need a [LambdaTest account](https://www.lambdatest.com/pricing) (If you don't already have one you can set up a free lifetime account to experiment). 
+Next, you will need a [LambdaTest account](https://accounts.lambdatest.com/register) (If you don't already have one you can set up a free lifetime account to experiment). 
 
 You can add your [LambdaTest credentials](https://www.lambdatest.com/support/docs/using-environment-variables-for-authentication-credentials/) in two ways. The simplest is to define the following system properties:
-* `LT_USERNAME` - Lambdatest user name
-* `LT_ACCESS_KEY`- Lambdatest access key
+* `LT_USERNAME` - LambdaTest user name
+* `LT_ACCESS_KEY`- LambdaTest access key
 
 Alternatively, you can define your username and accesskey using the `lt.user` and `lt.key` properties respectively in your `serenity.conf` file:
 
@@ -65,7 +67,7 @@ lambdatest {
 }
 ```
 
-## Defining LamdbaTest Capabilities
+## Defining LambdaTest Capabilities
 
 You can specify the operating system and browser you want to run your tests on by customising the [Selenium Capabilities](https://www.lambdatest.com/support/docs/selenium-automation-capabilities/) in your `serenity.conf` file. You do this in the `"LT:Options"` section of the `serenity.conf` file, e.g.
 

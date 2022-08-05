@@ -188,6 +188,10 @@ webdriver {
 }
 ```
 
+:::tip
+In older versions of Serenity, we used the `chrome.switches` property to define Chrome options. This property is not supported as of version 3.3.0, so you should use the W3C standard `"goog:chromeOptions"` capability for this instead.
+:::
+
 ### Configuring Chromedriver arguments
 
 You can define ChromeDriver arguments in the `args` property to set various startup options. For example, to start Chrome in maximized mode, you can use the `start-maximized` argument. Or if you want to run Chrome in headless mode, you can use the "headless" argument:
@@ -202,6 +206,18 @@ webdriver {
   }
 }
 ```
+
+Some of the more commonly used Chrome startup arguments include:
+
+| Argument               | Usage |
+| start-maximized        | Opens Chrome in maximize mode |
+| incognito              | Opens Chrome in incognito mode |
+| headless               | Opens Chrome in headless mode |
+| disable-extensions     | Disables existing extensions on Chrome browser |
+| disable-popup-blocking | Disables pop-ups displayed on Chrome browser |
+| make-default-browser   | Makes Chrome default browser |
+| version                | Prints chrome browser version |
+| disable-infobars       | Prevents Chrome from displaying the notification ‘Chrome is being controlled by automated software |
 
 ### Specifying the Chromedriver binary
 
@@ -231,7 +247,24 @@ webdriver {
 }
 ```
 
+### Blocking popup-windows
+By default, ChromeDriver configures Chrome to allow pop-up windows. If you want to block pop-ups (i.e., restore the normal Chrome behavior when it is not controlled by ChromeDriver), you can use the `excludedSwitches` option as follows:
+
+```hocon
+webdriver {
+  capabilities {
+    ...
+    "goog:chromeOptions" {
+      excludedSwitches = ["disable-popup-blocking"]
+    }
+  }
+}
+```
+
+
 ### Configuring Chrome preferences
+
+Some driver behaviour is specified in the Chrome preferences. For example, a common usage of the preferences section is to define a download directory, like this:
 
 ```hocon
 webdriver {
@@ -254,7 +287,7 @@ You can configure driver timeouts using standard W3C capabilities like this (all
 webdriver {
     capabilities {
         timeouts {
-            script = 30000
+           script = 30000
            pageLoad = 300000
            implicit = 0
        }
@@ -264,25 +297,51 @@ webdriver {
 
 ### Configuring ChromeDriver logging preferences
 
-goog:loggingPrefs
-
-### Configuring ChromeDriver 
-
-## Configuring Firefox
+You can also configure the Chrome logging preferences using the `goog:loggingPrefs` option.
 
 ## Condiguring Microsoft Edge
 
+Microsoft Edge is a Chromium driver, so the configuration is very similar to Chrome. The main difference is the use of `"ms:edgeOptions'"` instead of `"goog:chromeOptions"`. A typical configuration is shown below:
 
-## Configuring driver options for an individual test or scenario
+```hocon
+webdriver {
+  capabilities {
+    browserName = "MicrosoftEdge"
+    "ms:edgeOptions" {
+      args = ["test-type", "ignore-certificate-errors", "headless",
+        "incognito", "disable-infobars", "disable-gpu", "disable-default-apps", "disable-popup-blocking"]
+    }
+  }
+}
 
+```
 
-## Configuring Browser options
+## Configuring Firefox
 
-### Chrome
+Firefox uses the `"moz:firefoxOptions"` capability to define browser-specific option. A sample configuration is shown below:
 
-### Microsoft Edge
+```hocon
+webdriver {
+  capabilities {
+    browserName = "firefox"
 
-### Firefox
+    timeouts {
+      implicit = 1000
+      script = 1000
+      pageLoad = 1000
+    }
+    pageLoadStrategy = "normal"
+    acceptInsecureCerts = true
+    unhandledPromptBehavior = "dismiss"
+    strictFileInteractability = true
 
-## Configuring the driver programmatically
-
+    "moz:firefoxOptions" {
+      args = ["-headless"],
+      prefs {
+        "javascript.options.showInConsole": false
+      },
+      log {"level": "info"},
+    }
+  }
+}
+```

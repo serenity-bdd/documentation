@@ -6,8 +6,6 @@ sidebar_position: 8
 
 Selenium WebDriver lets you run your tests in a variety of browsers, each with a variety of configuration options. In this section we will look at how to configure your WebDriver driver in Serenity.
 
-# Configuring Selenium WebDriver
-
 The simplest way to configure the driver you want to use is in your project's `serenity.conf` file (which you will find in `src/test/resources` folder).
 
 Basic configuration options go in the `webdriver` section. For example, to run your tests with Chrome, you set the `webdriver.driver` property to "chrome":
@@ -39,22 +37,53 @@ When you run a WebDriver test against almost any driver, you need an OS-specific
 | Microsoft Edge | msedgedriver | https://developer.microsoft.com/en-us/microsoft-edge/tools/webdriver/ | webdriver.ie.driver |
 | Internet Explorer | IEDriverServer | https://github.com/SeleniumHQ/selenium/wiki/InternetExplorerDriver | webdriver.ie.driver |
 
-
 ### Automatic driver downloads
 
-Serenity integrates with [WebDriverManager](https://bonigarcia.dev/webdrivermanager/) to automatically download and install the appropriate driver binaries for the specified driver. 
+Serenity integrates with [WebDriverManager](https://bonigarcia.dev/webdrivermanager/) to automatically download and install the appropriate driver binaries for the specified driver.
+
+Automatic downloads are activated by default, but will not work if your test is not able to access the WebDriverManager servers (for example if you are behind a firewall or inside a corporate network). 
 
 ### Configuring driver binaries by hand
 
 If you cannot or do not want to download the WebDriver binaries automatically using WebDriverManager (for example, if you are in a corporate network which does not have access to the WebDriverManager binaries), you can download the binaries and configure them directly in the `serenity.conf` file. 
 
-In this case you need to either have the correct driver binary on your system path, or provide the path to the binary using the system property shown in the table above. For example, your serenity.conf file might contain the following:
+First of all, you will need to deactivate the automatic downloads, by setting the `webdriver.autodownload` property to false:
+
+```
+webdriver {
+  autodownload = false
+}
+```
+
+In this case you need to either have the correct driver binary on your system path, or provide the path to the binary using the system property shown in the table above. If no driver is available, you will see an error along the following lines.
+
+```
+net.thucydides.core.webdriver.DriverConfigurationError: Could not instantiate class org.openqa.selenium.chrome.ChromeDriver
+```
+
+There are several ways to configure the binary manually. One approach which is often used on CI servers is to specify the path to the driver on the command line, like this:
+
+```
+mvn clean verify -Dwebdriver.chrome.driver=/path/to/chromedriver
+```
+
+The system property you need to use varies for each browser:
+
+| Browser     | System Property |
+| ----------- | -----------     |
+| Chrome      | webdriver.chrome.driver       |
+| Edge        | webdriver.edge.driver         |
+| Firefox     | webdriver.gecko.driver        |
+| Internet Explorer | webdriver.ie.driver     |
+| Safari            | webdriver.safari.driver |
+
+You can also specify this property in your `serenity.conf`, for example:
 
 ```hocon
 webdriver.gecko.driver=/path/to/my/geckodriver
 ```
 
-However, adding a system path to your serenity.properties file is poor practice, as it means your tests will only run if the specified directory and binary exists, and that you are running the tests on the correct operating system. This obviously makes little sense if you are running your tests both locally, and on a CI environment.
+However, adding a system path to your Serenity configuration file is poor practice, as it means your tests will only run if the specified directory and binary exists, and that you are running the tests on the correct operating system. This obviously makes little sense if you are running your tests both locally, and on a CI environment.
 
 A more robust approach is to have your drivers in your source code, but have different drivers per OS. Serenity allows you to pass driver-specific properties to a driver, as long as they are prefixed with drivers._os_. For example, the following line will configure the webdriver.chrome.driver if you are running your tests under windows.
  

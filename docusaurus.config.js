@@ -8,8 +8,8 @@ const darkCodeTheme = require('prism-react-renderer/themes/dracula');
 const config = {
   title: 'Serenity BDD Users Manual',
   tagline: 'Automated Acceptance Testing With Style',
-  url: 'https://www.serenity-bdd.info',
-  baseUrl: '/documentation/',
+  url: 'https://serenity-bdd.github.io',
+  baseUrl: '/',
   onBrokenLinks: 'throw',
   onBrokenMarkdownLinks: 'warn',
   favicon: 'img/favicon.ico',

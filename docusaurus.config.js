@@ -25,13 +25,13 @@ const config = {
         docs: {
           sidebarPath: require.resolve('./sidebars.js'),
           // Please change this to your repo.
-          editUrl: 'https://github.com/serenity-bdd/',
+          editUrl: 'https://github.com/serenity-bdd/documentation',
         },
         blog: {
           showReadingTime: true,
           // Please change this to your repo.
           editUrl:
-            'https://johnfergusonsmart.com/blog',
+            'https://serenity-bdd.github.io/blog',
         },
         theme: {
           customCss: require.resolve('./src/css/custom.css'),
@@ -69,13 +69,13 @@ const config = {
             position: 'right',
           },
           {
-            href: 'http://expansion.serenity-dojo.com',
+            href: 'https://expansion.serenity-dojo.com/courses/testing-web-applications-with-serenity-bdd',
             label: 'Learn Serenity BDD Online',
             position: 'right',
           },
           {
-            href: 'http://expansion.serenity-dojo.com',
-            label: 'Serenity BDD Coaching',
+            href: 'https://www.serenity-dojo.com/',
+            label: 'BDD And Test Automation Coaching',
             position: 'right',
           },
         ],
@@ -135,7 +135,7 @@ const config = {
         copyright: `Copyright © ${new Date().getFullYear()} Serenity Dojo Ltd.`,
       },
       prism: {
-        additionalLanguages: ['java', 'scala'],
+        additionalLanguages: ['java', 'groovy'],
         theme: lightCodeTheme,
         darkTheme: darkCodeTheme,
       },

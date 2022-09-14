@@ -15,7 +15,7 @@ const config = {
   favicon: 'img/favicon.ico',
   trailingSlash: false,
   organizationName: 'serenity-bdd', // Usually your GitHub org/user name.
-  projectName: 'documentation', // Usually your repo name.
+  projectName: 'serenity-bdd.github.io', // Usually your repo name.
 
   presets: [
     [

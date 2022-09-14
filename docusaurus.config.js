@@ -16,6 +16,7 @@ const config = {
   trailingSlash: false,
   organizationName: 'serenity-bdd', // Usually your GitHub org/user name.
   projectName: 'serenity-bdd.github.io', // Usually your repo name.
+  // NB: We need to set the env variable DEPLOYMENT_BRANCH to gh-pages
 
   presets: [
     [

@@ -50,4 +50,5 @@ jobs:
           else
             npm i
           fi
+          npm run build
           npm run deploy
